@@ -1,19 +1,10 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <nav class="p-4 font-bold text-blue-600">
+      <router-link class="hover:text-green-400" to="/">Home</router-link> |
+      <router-link class="hover:text-green-400" to="/login">Login</router-link>
+    </nav>
+    <router-view/>
   </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
-
-<style>
-</style>

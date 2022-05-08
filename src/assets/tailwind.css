@@ -3,3 +3,9 @@
 @tailwind components;
 
 @tailwind utilities;
+
+@layer components {
+    .router-link-exact-active {
+        color: #42b983;
+    }
+}
