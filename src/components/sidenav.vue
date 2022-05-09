@@ -1,10 +1,10 @@
 <template>
-  <div class="font-bold text-green-700 text-3xl text-center mt-3 pt-4">HELLO WORLD</div>
+  <div class="w-[30%] mt-3 pt-4">SideNav</div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'SideNav',
   props: {
     msg: String
   }

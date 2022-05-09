@@ -16,8 +16,11 @@
           <hr class="my-6">
           <span class="absolute -top-3.5 left-[45%] px-2 bg-white">or</span>
         </div>
-        <input class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 " type="text" placeholder="Phone, email or username">
-        <button class="block w-full rounded-full my-2 py-2 bg-black text-white font-bold text-md hover:bg-gray-900">Next</button>
+        <form @submit.prevent="submitCreds">
+          <input class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
+          focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="text" placeholder="Phone, email or username">
+          <button class="block w-full rounded-full my-2 py-2 bg-black text-white font-bold text-md hover:bg-gray-900">Next</button>
+        </form>
         <button class="block w-full border rounded-full border-slate-300 my-4 py-2 hover:bg-stone-300 font-bold">Forgot password?</button>
       </div>
 
@@ -35,9 +38,12 @@
     data() {
       return {
         username: ''
-      }
+      };
     },
-    method: {
+    methods: {
+      submitCreds(event) {
+        console.log(' ---- event => ', event);
+      }
     }
   }
 </script>
