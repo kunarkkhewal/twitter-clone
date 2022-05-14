@@ -3,8 +3,8 @@
     <div class="flex flex-col justify-center border rounded-xl max-w-min min-h-min min-w-[600px] m-auto bg-white py-3 px-2">
       <!-- header -->
       <div class="text-center flex flex-row w-[400px]">
-        <div class="w-[70%] pl-2 text-left"><button class="w-4 h-5"><img src="../../assets/close.png" alt="close"></button></div>
-        <img class="w-auto h-6" src="../../assets/Twitter-logo.png" alt="logo">
+        <div class="w-[70%] pl-2 text-left"><button class="w-8 h-8"><i class="fas fa-times text-2xl"></i></button></div>
+        <i class="fab fa-twitter h-12 w-12 text-3xl text-blue"></i>
       </div>
 
       <!-- main -->

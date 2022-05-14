@@ -3,8 +3,8 @@
     <div class="flex flex-col justify-center border rounded-xl max-w-min min-h-min min-w-[600px] m-auto bg-white py-3 px-2">
       <!-- header -->
       <div class="text-center flex flex-row w-[400px]">
-        <div class="w-[70%] pl-2 text-left"><button class="w-4 h-5"><img src="../assets/close.png" alt="close"></button></div>
-        <img class="w-auto h-6" src="./../assets/Twitter-logo.png" alt="logo">
+        <div class="w-[70%] pl-2 text-left"><button class="w-8 h-8"><i class="fas fa-times text-2xl"></i></button></div>
+          <i class="fab fa-twitter h-12 w-12 text-3xl text-blue"></i>
       </div>
 
       <!-- main -->
@@ -17,8 +17,8 @@
           <span class="absolute -top-3.5 left-[45%] px-2 bg-white">or</span>
         </div>
         <form @submit.prevent="submitCreds">
-          <input class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
-          focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="text" placeholder="Phone, email or username">
+          <input class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-dark 
+          focus:outline-none focus:border-blue focus:border-2 focus:placeholder:text-blue focus:mb-1.5" type="text" placeholder="Phone, email or username">
           <button class="block w-full rounded-full my-2 py-2 bg-black text-white font-bold text-md hover:bg-gray-900">Next</button>
         </form>
         <button class="block w-full border rounded-full border-slate-300 my-4 py-2 hover:bg-stone-300 font-bold">Forgot password?</button>
@@ -26,7 +26,7 @@
 
       <!-- footer -->
       <div class="w-72 text-left m-auto my-6">
-        <h3 class="text-gray-500">Don't have an account? <router-link class="text-cyan-500 hover:underline hover:underline-offset-1" to="/signup">Sign up</router-link></h3>
+        <h3 class="text-dark">Don't have an account? <router-link class="text-blue hover:underline hover:underline-offset-1" to="/signup">Sign up</router-link></h3>
       </div>
     </div>
   </div>
