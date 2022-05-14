@@ -16,6 +16,25 @@ const routes = [
     name: 'profile',
     component: ProfileView
   },
+
+  // {
+  //   path: '/',
+  //   children: [
+  //     {
+  //       // UserProfile will be rendered inside User's <router-view>
+  //       // when /user/:id/profile is matched
+  //       path: '/home',
+  //       component: HomeView,
+  //     },
+  //     {
+  //       // UserPosts will be rendered inside User's <router-view>
+  //       // when /user/:id/posts is matched
+  //       path: '/profile',
+  //       component: ProfileView,
+  //     },
+  //   ],
+  // },
+
   {
     path: '/login',
     name: 'login',

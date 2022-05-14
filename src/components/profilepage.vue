@@ -12,7 +12,7 @@
       </div>
       <div class="flex justify-end h-48 p-4">
         <div class="absolute top-20 left-8">
-          <img src="profile.png" class="flex-none w-28 h-28 mb-4 rounded-full border-2 border-white"/>
+          <img src="display-picture.png" class="flex-none w-28 h-28 mb-4 rounded-full border-4 border-white"/>
           <p class="text-xl font-bold">Kunark Khewal</p>
           <p class="text-md text-dark font-normal mb-2">@kunarkkhewal</p>
           <p class="text-dark font-medium">
@@ -33,7 +33,7 @@
     <div class="flex flex-col-reverse"> 
       <div v-for="tweet in tweets" :key=tweet class="w-full p-4 border-b hover:bg-lightest flex">
         <div class="mr-4">
-          <img src="profile.png" class="h-12 w-12 rounded-full"/>
+          <img src="display-picture.png" class="h-12 w-12 rounded-full"/>
         </div>
         <div class="w-full">
           <div class="flex items-center w-full">

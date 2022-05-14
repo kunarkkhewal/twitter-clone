@@ -6,7 +6,7 @@
     </div>
     <div class="px-5 py-3 border-b border-lighter flex">
       <div class="flex-none">
-        <img src="profile.png" class="flex-none w-12 h-12 rounded-full border border-lighter"/>
+        <img src="display-picture.png" class="flex-none w-12 h-12 rounded-full border border-lighter"/>
       </div>
       <form v-on:submit.prevent = "addNewTweet" class="w-full px-4 relative">
         <textarea v-model="tweet.content" placeholder="What's happening?" 
@@ -20,7 +20,7 @@
         </button>
       </form>
     </div>
-    <div v-for="follow in following" :key=follow class="w-full p-4 border-b hover:bg-lightest flex">
+    <div v-for="follow in following" :key=follow.handle class="w-full p-4 border-b hover:bg-lightest flex">
       <div class="mr-4">
         <img :src="`${follow.src}`" class="h-12 w-12 rounded-full"/>
       </div>
@@ -71,10 +71,10 @@ export default {
         {icon: 'fas fa-map-marker-alt', id: 'marker'}
       ],
       following: [
-        {src: 'elon.jpg', name: 'Elon Musk', handle: '@teslaBoy', time: '20 min', tweet: 'Should I just quarantine on mars??', comments: '1,000', retweets: '550', like: '1,000,003'},
-        {src: 'kevin.jpg', name: 'Kevin Hart', handle: '@miniRock', time: '55 min', tweet: 'Should me and the rock do another sub-par movie together????', comments: '2,030', retweets: '50', like: '20,003'},
-        {src: 'elon.jpg', name: 'Elon Musk', handle: '@teslaBoy', time: '1.4 hr', tweet: 'Haha just made a flame thrower. Shld I sell them?', comments: '100,000', retweets: '1,000,002', like: '5,000,003'},
-        {src: 'elon.jpg', name: 'Elon Musk', handle: '@teslaBoy', time: '1.4 hr', tweet: 'Just did something crazyyyyyyy', comments: '100,500', retweets: '1,000,032', like: '5,000,103'}
+        {src: 'display-picture.png', name: 'Elon Musk', handle: '@teslaBoy', time: '20 min', tweet: 'Should I just quarantine on mars??', comments: '1,000', retweets: '550', like: '1,000,003'},
+        {src: 'display-picture.png', name: 'Kevin Hart', handle: '@miniRock', time: '55 min', tweet: 'Should me and the rock do another sub-par movie together????', comments: '2,030', retweets: '50', like: '20,003'},
+        {src: 'display-picture.png', name: 'Elon Musk', handle: '@teslaBoy', time: '1.4 hr', tweet: 'Haha just made a flame thrower. Shld I sell them?', comments: '100,000', retweets: '1,000,002', like: '5,000,003'},
+        {src: 'display-picture.png', name: 'Elon Musk', handle: '@teslaBoy', time: '1.4 hr', tweet: 'Just did something crazyyyyyyy', comments: '100,500', retweets: '1,000,032', like: '5,000,103'}
       ],
       tweets: [
         {content: 'It is so nice outside!'}
