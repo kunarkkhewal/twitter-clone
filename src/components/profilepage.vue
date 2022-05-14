@@ -77,9 +77,10 @@ export default {
   },
   data() {
     return {
-      tweets: [
-        {content: 'It is so nice outside!'}
-      ],
+      // tweets: [
+      //   {content: 'It is so nice outside!'}
+      // ],
+      tweets: this.$store.state.tweets,
       tweet: {content: ''}
     }
   },

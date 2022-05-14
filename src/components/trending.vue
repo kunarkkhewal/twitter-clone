@@ -49,11 +49,12 @@
           {top: 'Trending in US', title: 'Denim Day', bottom: '40k tweets'},
           {top: 'Trending', title: 'When Beyonce', bottom: '25.4k tweets'},
         ],
-        friends: [
-          {src: 'display-picture.png', name: 'Elon Musk', handle: '@teslaBoy'},
-          {src: 'display-picture.png', name: 'Adrian Monk', handle: '@detective:)'},
-          {src: 'display-picture.png', name: 'Kevin Hart', handle: '@miniRock'}
-        ],
+        // friends: [
+        //   {src: 'display-picture.png', name: 'Elon Musk', handle: '@teslaBoy'},
+        //   {src: 'display-picture.png', name: 'Adrian Monk', handle: '@detective:)'},
+        //   {src: 'display-picture.png', name: 'Kevin Hart', handle: '@miniRock'}
+        // ],
+        friends: this.$store.state.friends,
       }
     }
   }
