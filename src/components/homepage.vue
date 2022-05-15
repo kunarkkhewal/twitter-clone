@@ -70,13 +70,11 @@
         moment: moment,
         icons: this.$store.state.icons,
         tweetDisabled: true,
-        tweets: [],
+        tweets: this.$store.getters.getFeed 
+          ? this.$store.getters.getFeed.sort((a,b) => {return b.timestamp - a.timestamp}) 
+          : [],
         tweet: {content: ''}
       }
-    },
-    mounted() {
-      this.tweets = this.$store.getters.getFeed;
-      this.tweets.sort((a,b) => {return b.timestamp - a.timestamp});
     },
     methods: {
       isTweeting () {
@@ -85,6 +83,9 @@
         } else {
           this.tweetDisabled = true;
         }
+      },
+      updateFeed() {
+        this.tweets = this.$store.getters.getFeed.sort((a,b) => {return b.timestamp - a.timestamp});
       },
       addNewTweet () {
         let newTweet = {
@@ -96,8 +97,5 @@
         this.updateFeed()
       }
     },
-    updateFeed() {
-      this.tweets = this.$store.getters.getFeed;
-    }
   }
 </script>
