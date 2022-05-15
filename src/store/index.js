@@ -9,9 +9,9 @@ export default new Vuex.Store({
     isLoggedIn: false,
     loggedInUser: '', //todo: format can be changed later
     users: {
-      kunark: {password: 'password', name: 'Kunark', location: 'New Delhi', joined: 'July 2017'},
-      user1: {password: 'password', name: 'User 1', location: 'New Delhi', joined: 'July 2018'},
-      user2: {password: 'password', name: 'User 2', location: 'New Delhi', joined: 'July 2019'}
+      kunark: {password: 'password', name: 'Kunark', username: 'kunark', location: 'New Delhi', joined: 'July 2017'},
+      user1: {password: 'password', name: 'User 1', username: 'user1', location: 'New Delhi', joined: 'July 2018'},
+      user2: {password: 'password', name: 'User 2', username: 'user2', location: 'New Delhi', joined: 'July 2019'}
     },
     icons: [
       {icon: 'far fa-image', id:'image'},
@@ -107,17 +107,25 @@ export default new Vuex.Store({
       state.isLoggedIn = false;
       state.loggedInUser = '';
     },
+    createUser (state, userInfo) {
+      state.users[userInfo.username] = {}
+      state.users[userInfo.username] = userInfo;
+    },
     addTweet (state, newTweet) {
       state.tweets[state.loggedInUser].push(newTweet);
     },
   },
   actions: {
-    login ({commit}, username) {
+    login ({ commit }, username) {
       commit('login', username);
       router.push('/');
     },
     logout ({ commit }) {
       commit('logout');
+      router.push('/login');
+    },
+    createUser ({ commit }, userInfo) {
+      commit('createUser', userInfo);
       router.push('/login');
     }
   },
