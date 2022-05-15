@@ -3,8 +3,8 @@
     <div class="px-5 py-3 flex items-center justify-start">
       <router-link to='/'><i class="fas fa-arrow-left text-xl text-black hover:bg-lighter py-1 px-2 rounded-full"></i></router-link>
       <div class="ml-5">
-        <h1 class="text-xl font-bold">Kunark Khewal</h1>
-        <p class="text-sm text-dark font-normal">157 Tweets</p>
+        <h1 class="text-xl font-bold">{{userInfo.name}}</h1>
+        <p class="text-sm text-dark font-normal">{{tweets.length}} Tweets</p>
       </div>
     </div>
     <div class="py-3 border-b border-lighter flex flex-col relative">
@@ -13,15 +13,15 @@
       <div class="flex justify-end h-48 p-4">
         <div class="absolute top-20 left-8">
           <img src="display-picture.png" class="flex-none w-28 h-28 mb-4 rounded-full border-4 border-white"/>
-          <p class="text-xl font-bold">Kunark Khewal</p>
-          <p class="text-md text-dark font-normal mb-2">@kunarkkhewal</p>
+          <p class="text-xl font-bold">{{userInfo.name}}</p>
+          <p class="text-md text-dark font-normal mb-2">@username</p>
           <p class="text-dark font-medium">
-            <span><i class="fas fa-map-marker-alt"></i> New Delhi, India</span> 
-            <span class="ml-4"><i class="fas fa-calendar-alt"></i> Joined July 2017</span>
+            <span><i class="fas fa-map-marker-alt"></i> {{userInfo.location}}</span> 
+            <span class="ml-4"><i class="fas fa-calendar-alt"></i> Joined {{userInfo.joined}}</span>
           </p>
           <p class="text-dark">
-            <span><span class="text-black font-semibold">143</span> Following</span> 
-            <span class="ml-4"><span class="text-black font-semibold">25</span> Followers</span>
+            <span><span class="text-black font-semibold">{{following.length}}</span> Following</span> 
+            <span class="ml-4"><span class="text-black font-semibold">{{followers.length}}</span> Followers</span>
           </p>
         </div>
         <div>
@@ -31,16 +31,18 @@
     </div>
     <!-- need to see for col-reverse -->
     <div class="flex flex-col-reverse"> 
-      <div v-for="tweet in tweets" :key=tweet class="w-full p-4 border-b hover:bg-lightest flex">
+      <!-- {{tweets}} -->
+      <div v-for="tweet in tweets" :key=tweet.timestamp class="w-full p-4 border-b hover:bg-lightest flex">
         <div class="mr-4">
+          <!-- todo: dp -->
           <img src="display-picture.png" class="h-12 w-12 rounded-full"/>
         </div>
         <div class="w-full">
           <div class="flex items-center w-full">
             <!-- make this all dynamic -->
-            <p class="font-semibold"> Kunark Khewal </p>
-            <p class="text-sm text-dark ml-2"> @kunarkkhewal </p>
-            <p class="text-sm text-dark ml-2"><span class="mr-1 font-extrabold">.</span> 1 sec </p>
+            <p class="font-semibold"> {{userInfo.name}} </p>
+            <p class="text-sm text-dark ml-2"> @username </p>
+            <p class="text-sm text-dark ml-2"><span class="mr-1 font-extrabold">.</span> {{moment(tweet.timestamp).fromNow()}} </p>
             <i class="fas fa-ellipsis-h text-dark ml-auto cursor-pointer p-2 rounded-full hover:bg-blue/20 hover:text-blue"></i>
           </div>
           <p class="py">
@@ -57,7 +59,7 @@
             </div>
             <div class="flex items-center text-sm text-dark cursor-pointer -ml-2 hover:text-rose-500">
               <i class="fas fa-heart mr-1 p-2 rounded-full hover:bg-rose-500/20"></i>
-              <p> 1 </p>
+              <p> 0 </p>
             </div>
             <div class="flex items-center text-sm text-dark   cursor-pointer -ml-2 hover:text-blue">
               <i class="fas fa-share-square mr-1 p-2 rounded-full hover:bg-blue/20"></i>
@@ -71,20 +73,23 @@
 </template>
 
 <script>
-export default {
-  name: 'ProfilePage',
-  components: {
-  },
-  data() {
-    return {
-      // tweets: [
-      //   {content: 'It is so nice outside!'}
-      // ],
-      tweets: this.$store.state.tweets,
-      tweet: {content: ''}
+  import moment from 'moment';
+
+  export default {
+    name: 'ProfilePage',
+    components: {
+    },
+    data() {
+      return {
+        moment: moment,
+        // username: 
+        userInfo: this.$store.getters.getUserInfo(),
+        tweets: this.$store.getters.getUserTweets(),
+        following: this.$store.getters.getFollowing(),
+        followers: this.$store.getters.getFollowers(),
+      }
+    },
+    methods: {
     }
-  },
-  methods: {
   }
-}
 </script>
