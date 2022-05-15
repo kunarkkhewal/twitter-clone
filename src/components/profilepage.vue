@@ -25,7 +25,8 @@
           </p>
         </div>
         <div>
-          <button class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Edit Profile</button>
+          <button v-if='!differentUser' class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Edit Profile</button>
+          <button v-if='differentUser' class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Follow</button>
         </div>
       </div>
     </div>
@@ -82,6 +83,7 @@
     data() {
       return {
         moment: moment,
+        differentUser: this.$route.params.username !== this.$store.state.loggedInUser,
         userInfo: this.$store.getters.getUserInfo(this.$route.params.username),
         tweets: this.$store.getters.getUserTweets(this.$route.params.username),
         following: this.$store.getters.getFollowing(this.$route.params.username),

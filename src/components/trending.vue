@@ -5,7 +5,7 @@
     
     <div class="w-full rounded-lg bg-lightest">
       <p class="p-3 text-xl font-bold">What's happening</p>
-      <button v-for="trend in trending" :key=trend class="w-full flex justify-between hover:bg-lighter p-3">
+      <button v-for="trend in trending" :key=trend.top class="w-full flex justify-between hover:bg-lighter p-3">
         <div>
           <p class="text-xs text-left leading-tight text-dark"> {{ trend.top}} </p>
           <p class="text-sm text-left font-bold leading-tight"> {{ trend.title}} </p>
@@ -20,7 +20,7 @@
 
     <div class="w-full rounded-lg bg-lightest my-4">
       <p class="p-3 text-xl font-bold">Who to Follow</p>
-      <button v-for="friend in friends" :key=friend class="w-full flex hover:bg-lighter p-3">
+      <button v-for="friend in friends" :key=friend.handle class="w-full flex hover:bg-lighter p-3">
         <img :src="`${ friend.src }`" class="w-12 h-12 rounded-full border border-lighter" />
         <div class="hidden lg:block ml-4">
           <p class="text-md font-semibold leading-tight"> {{ friend.name }} </p>

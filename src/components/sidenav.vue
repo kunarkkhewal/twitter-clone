@@ -28,7 +28,7 @@
       </button>
       <div v-if="dropdown === true" class="absolute bottom-5 left-0 w-64 rounded-lg shadow-xl border-2 border-lightest bg-white mb-16">
         <button @click="dropdown = false" class="p-3 flex items-center w-full p-2 focus:outline-none">
-          <img src="display-picture.png" class="w-10 h-10 rounded-full border border-lighter" />
+          <img src="../assets/display-picture.png" class="w-10 h-10 rounded-full border border-lighter" />
           <div class="ml-4 cursor-default">
             <!-- make this dynamic -->
             <p class="text-sm font-bold leading-tight"> {{userInfo.name}} </p>

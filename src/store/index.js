@@ -21,10 +21,13 @@ export default new Vuex.Store({
       {icon: 'fas fa-map-marker-alt', id: 'marker'}
     ],
     following: {
-      kunark: ['user1', 'user2']
+      kunark: ['user1', 'user2'],
+      user2: ['kunark']
     },
     followers: {
-      kunark: ['user2']
+      kunark: ['user2'],
+      user1: ['kunark'],
+      user2: ['kunark']
     },
     tweets: {
       kunark: [{content: 'It is so nice outside!', timestamp: 1652616992000 }], //todo: add likes and all
