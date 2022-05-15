@@ -32,6 +32,8 @@
 </template>
 
 <script>
+  import swal from 'sweetalert';
+
   export default {
     name: 'LoginFormPage',
     props: [
@@ -64,11 +66,13 @@
             this.password = '';
             this.loginDisabled = true;
             this.$emit('changeComponent', 'LoginMainPage');
+            swal("", "Incorrect Username and Password", "error");
           }
         } else {
           this.password = '';
           this.loginDisabled = true;
           this.$emit('changeComponent', 'LoginMainPage');
+          swal("", "Incorrect Username and Password", "error");
         }
       }
     }
