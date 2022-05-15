@@ -1,0 +1,73 @@
+<template>
+  <div class="bg-neutral-400 min-h-screen py-8">
+    <div class="flex flex-col justify-center border rounded-xl max-w-min min-w-[600px] m-auto bg-white py-3 px-2">
+      <!-- header -->
+      <div class="text-center flex flex-row w-[400px]">
+        <div @click="$emit('changeComponent', 'LoginMainPage')" class="w-[70%] pl-2 text-left"><button class="w-8 h-8"><i class="fas fa-times text-2xl"></i></button></div>
+        <i class="fab fa-twitter h-12 w-12 text-3xl text-blue"></i>
+      </div>
+
+      <form @submit.prevent="loginUser">
+        <!-- main -->
+        <div class="px-20 text-center m-auto my-6 overflow-y-scroll h-[50%]">
+          <h2 class="text-3xl font-bold mb-4 text-left">Enter your password</h2>
+          <input class="rounded-sm w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-light" type="text" :placeholder="username" disabled> 
+          <input @keypress="isLoggingIn" @keyup.delete="isLoggingIn" class="border border-lighter rounded-sm w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
+            focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="password"
+            v-model="password" placeholder="Password">
+          <button class="text-blue text-sm font-normal text-left flex hover:underline">Forgot password?</button>
+        </div>
+
+        <!-- footer -->
+        <div class="w-full text-left m-auto my-6 mt-16">
+          <button @click="loginUser" class="block w-96 rounded-full m-auto my-2 py-4 bg-black text-white font-bold text-md hover:bg-gray-900 disabled:bg-dark" 
+            :disabled="loginDisabled">
+            Log in
+          </button>
+        </div>
+    
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'LoginFormPage',
+    props: [
+      'username'
+    ],
+    emits: ['changeComponent'],
+    data() {
+      return {
+        password: '',
+        loginDisabled: true
+      };
+    },
+    methods: {
+      isLoggingIn () {
+        if (this.password) {
+          this.loginDisabled = false;
+        } else {
+          this.loginDisabled = true;
+        }
+      },
+      loginUser () {
+        if (this.$store.getters.ifUserExists(this.username)) {
+          const userPassword = this.$store.getters.getUserPassword(this.username);
+          if (userPassword !== '' && userPassword === this.password) {
+            this.$store.dispatch('login', this.username);
+          } else {
+            this.password = '';
+            this.loginDisabled = true;
+            this.$emit('changeComponent', 'LoginMainPage');
+          }
+        } else {
+          this.password = '';
+          this.loginDisabled = true;
+          this.$emit('changeComponent', 'LoginMainPage');
+        }
+      }
+    }
+  }
+</script>

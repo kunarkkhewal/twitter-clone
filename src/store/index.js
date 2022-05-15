@@ -1,10 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '../router/index';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    isLoggedIn: false,
+    loggedInUser: '', //todo: can be changed later
+    users: {
+      kunark: 'password',
+      user1: 'password',
+      user2: 'password'
+    },
     icons: [
       {icon: 'far fa-image', id:'image'},
       {icon: 'fas fa-poll-h', id: 'poll'},
@@ -28,13 +36,41 @@ export default new Vuex.Store({
     ]
   },
   getters: {
-  },
-  mutations: {
-    addTweet (state, newTweet) {
-      state.tweets.push(newTweet)
+    ifUserExists: (state) => (username) => {
+      if (state.users[username]) {
+        return true
+      }
+      return false;
+    },
+    getUserPassword: (state) => (username) => {
+      if (state.users[username]) {
+        return state.users[username]
+      }
+      return '';
     }
   },
+  mutations: {
+    login (state, username) {
+      state.isLoggedIn = true;
+      state.loggedInUser = username;
+    },
+    logout (state) {
+      state.isLoggedIn = false;
+      state.loggedInUser = '';
+    },
+    addTweet (state, newTweet) {
+      state.tweets.push(newTweet);
+    },
+  },
   actions: {
+    login ({commit}, username) {
+      commit('login', username);
+      router.push('/');
+    },
+    logout ({ commit }) {
+      commit('logout');
+      router.push('/login');
+    }
   },
   modules: {
   }

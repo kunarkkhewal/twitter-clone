@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import ProfileView from '../views/ProfileView.vue';
+import store from '../store/index';
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,10 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: () => import('../views/SignupView.vue')
+  },
+  {
+    path: '*',
+    redirect: '/'
   }
 ]
 
@@ -55,5 +60,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.fullPath === '/' || to.fullPath === '/profile') {
+    if (!store.state.isLoggedIn) {
+      next('/login');
+    }
+  }
+  if (to.fullPath === '/login') {
+    if (store.state.isLoggedIn) {
+      next('/');
+    }
+  }
+  next();
+});
 
 export default router

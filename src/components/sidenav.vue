@@ -39,7 +39,7 @@
         <button @click="dropdown = false" class="w-full text-left hover:bg-lightest border-t border-lighter p-3 focus:outline-none">
           Add an existing account
         </button>
-        <button @click="dropdown = false" class="w-full text-left hover:bg-lightest border-t border-lighter p-3 focus:outline-none">
+        <button @click="logout" class="w-full text-left hover:bg-lightest border-t border-lighter p-3 focus:outline-none">
           <!-- make dynamic -->
           Log out @kunarkkhewal
         </button>
@@ -65,6 +65,11 @@ export default {
       ],
       id: 'home',
       dropdown: false,
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout');
     }
   }
 }
