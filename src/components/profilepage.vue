@@ -12,9 +12,9 @@
       </div>
       <div class="flex justify-end h-48 p-4">
         <div class="absolute top-20 left-8">
-          <img src="display-picture.png" class="flex-none w-28 h-28 mb-4 rounded-full border-4 border-white"/>
+          <img src="../assets/display-picture.png" class="flex-none w-28 h-28 mb-4 rounded-full border-4 border-white"/>
           <p class="text-xl font-bold">{{userInfo.name}}</p>
-          <p class="text-md text-dark font-normal mb-2">@username</p>
+          <p class="text-md text-dark font-normal mb-2">@{{$route.params.username}}</p>
           <p class="text-dark font-medium">
             <span><i class="fas fa-map-marker-alt"></i> {{userInfo.location}}</span> 
             <span class="ml-4"><i class="fas fa-calendar-alt"></i> Joined {{userInfo.joined}}</span>
@@ -35,13 +35,13 @@
       <div v-for="tweet in tweets" :key=tweet.timestamp class="w-full p-4 border-b hover:bg-lightest flex">
         <div class="mr-4">
           <!-- todo: dp -->
-          <img src="display-picture.png" class="h-12 w-12 rounded-full"/>
+          <img src="../assets/display-picture.png" class="h-12 w-12 rounded-full"/>
         </div>
         <div class="w-full">
           <div class="flex items-center w-full">
             <!-- make this all dynamic -->
             <p class="font-semibold"> {{userInfo.name}} </p>
-            <p class="text-sm text-dark ml-2"> @username </p>
+            <p class="text-sm text-dark ml-2"> @{{$route.params.username}} </p>
             <p class="text-sm text-dark ml-2"><span class="mr-1 font-extrabold">.</span> {{moment(tweet.timestamp).fromNow()}} </p>
             <i class="fas fa-ellipsis-h text-dark ml-auto cursor-pointer p-2 rounded-full hover:bg-blue/20 hover:text-blue"></i>
           </div>
@@ -82,11 +82,10 @@
     data() {
       return {
         moment: moment,
-        // username: 
-        userInfo: this.$store.getters.getUserInfo(),
-        tweets: this.$store.getters.getUserTweets(),
-        following: this.$store.getters.getFollowing(),
-        followers: this.$store.getters.getFollowers(),
+        userInfo: this.$store.getters.getUserInfo(this.$route.params.username),
+        tweets: this.$store.getters.getUserTweets(this.$route.params.username),
+        following: this.$store.getters.getFollowing(this.$route.params.username),
+        followers: this.$store.getters.getFollowers(this.$route.params.username),
       }
     },
     methods: {

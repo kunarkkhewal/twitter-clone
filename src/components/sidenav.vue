@@ -1,7 +1,7 @@
 <template>
   <div class="lg:w-[22%] border-r border-lighter px-2 lg:px-6 py-2 flex flex-col justify-between">
     <div>
-      <button class="h-12 w-12 hover:bg-lightblue text-3xl rounded-full text-blue">
+      <button class="h-12 w-12 hover:bg-lightblue text-3xl border-0 rounded-full text-blue">
         <i class="fab fa-twitter"></i>
       </button>
       <div>
@@ -18,11 +18,11 @@
     </div>
     <div class="lg:w-full relative">
       <button @click="dropdown = true" class="flex items-center w-full hover:bg-lighter rounded-full p-5 focus:outline-none">
-        <img src="display-picture.png" class="w-10 h-10 rounded-full border border-lighter" />
+        <img src="../assets/display-picture.png" class="w-10 h-10 rounded-full border border-lighter" />
         <div class="hidden lg:block ml-4">
           <!-- make this dynamic for logged in user -->
-          <p class="text-sm font-bold leading-tight"> Kunark Khewal </p>
-          <p class="text-sm leading-tight"> @kunarkkhewal </p>
+          <p class="text-sm font-bold leading-tight"> {{userInfo.name}} </p>
+          <p class="text-sm leading-tight"> @{{$store.state.loggedInUser}} </p>
         </div>
         <i class="hidden lg:block fas fa-angle-down ml-auto text-lg"></i>
       </button>
@@ -31,8 +31,8 @@
           <img src="display-picture.png" class="w-10 h-10 rounded-full border border-lighter" />
           <div class="ml-4 cursor-default">
             <!-- make this dynamic -->
-            <p class="text-sm font-bold leading-tight"> Kunark Khewal </p>
-            <p class="text-sm leading-tight"> @kunarkkhewal </p>
+            <p class="text-sm font-bold leading-tight"> {{userInfo.name}} </p>
+            <p class="text-sm leading-tight"> @{{$store.state.loggedInUser}} </p>
           </div>
           <i class="fas fa-check ml-auto text-blue"></i>
         </button>
@@ -41,7 +41,7 @@
         </button>
         <button @click="logout" class="w-full text-left hover:bg-lightest border-t border-lighter p-3 focus:outline-none">
           <!-- make dynamic -->
-          Log out @kunarkkhewal
+          Log out@{{$store.state.loggedInUser}}
         </button>
       </div>
     </div>
@@ -65,6 +65,7 @@ export default {
       ],
       id: 'home',
       dropdown: false,
+      userInfo: this.$store.getters.getUserInfo(this.$store.state.loggedInUser),
     }
   },
   methods: {

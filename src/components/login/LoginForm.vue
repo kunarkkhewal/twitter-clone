@@ -14,7 +14,7 @@
           <input class="rounded-sm w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-light" type="text" :placeholder="username" disabled> 
           <input @keypress="isLoggingIn" @keyup.delete="isLoggingIn" class="border border-lighter rounded-sm w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
             focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="password"
-            v-model="password" placeholder="Password">
+            v-model="password" ref="input" placeholder="Password">
           <button class="text-blue text-sm font-normal text-left flex hover:underline">Forgot password?</button>
         </div>
 
@@ -43,6 +43,9 @@
         password: '',
         loginDisabled: true
       };
+    },
+    mounted() {
+      this.$refs.input.focus()
     },
     methods: {
       isLoggingIn () {

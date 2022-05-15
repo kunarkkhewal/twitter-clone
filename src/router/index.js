@@ -13,7 +13,7 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/profile',
+    path: '/profile/:username',
     name: 'profile',
     component: ProfileView
   },
@@ -62,7 +62,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.fullPath === '/' || to.fullPath === '/profile') {
+  if (to.fullPath === '/' || to.fullPath.includes('profile')) {
     if (!store.state.isLoggedIn) {
       next('/login');
     }
