@@ -5,7 +5,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    // data: {
     icons: [
       {icon: 'far fa-image', id:'image'},
       {icon: 'fas fa-poll-h', id: 'poll'},
@@ -27,11 +26,13 @@ export default new Vuex.Store({
       {src: 'display-picture.png', name: 'Adrian Monk', handle: '@detective:)'},
       {src: 'display-picture.png', name: 'Kevin Hart', handle: '@miniRock'}
     ]
-    // }
   },
   getters: {
   },
   mutations: {
+    addTweet (state, newTweet) {
+      state.tweets.push(newTweet)
+    }
   },
   actions: {
   },
