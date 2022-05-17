@@ -4,7 +4,7 @@
       <h1 class="text-xl font-bold">Home</h1>
       <i class="far fa-star text-xl text-blue hover:bg-lighter py-1 px-2 rounded-full"></i>
     </div>
-    <div class="px-5 py-3 border-b border-lighter flex">
+    <div class="pb-10 md:pb-3 px-5 py-3 border-b border-lighter flex">
       <div class="flex-none">
         <router-link :to="`/profile/${$store.state.loggedInUser}`"><img src="display-picture.png" class="flex-none w-12 h-12 rounded-full border border-lighter"/></router-link>
       </div>
@@ -15,7 +15,7 @@
         <div class="pt-2 flex items-center">
           <i v-for="icon in icons" :key=icon.id :class="`text-lg text-blue p-2 px-3 rounded-full cursor-pointer ${icon.icon} hover:bg-lightblue`"></i>
         </div>
-        <button type="submit" class="h-10 px-4 text-white font-semibold bg-blue hover:bg-darkblue focus:outline-none rounded-full absolute bottom-0 right-0 disabled:bg-blue/50" :disabled="tweetDisabled">
+        <button type="submit" class="h-10 px-4 text-white font-semibold bg-blue hover:bg-darkblue focus:outline-none rounded-full absolute -bottom-8 md:bottom-0 right-0 disabled:bg-blue/50" :disabled="tweetDisabled">
           Tweet
         </button>
       </form>
@@ -94,6 +94,7 @@
         };
         this.tweet.content = '';
         this.$store.commit('addTweet', newTweet)
+        this.tweetDisabled = true;
         this.updateFeed()
       }
     },
