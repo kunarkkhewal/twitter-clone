@@ -33,12 +33,7 @@ export default new Vuex.Store({
       kunark: [{content: 'It is so nice outside!', timestamp: 1652616992000 }], //todo: add likes and all
       user1: [{content: 'User1 Tweet1', timestamp: 1652420152000 }],
       user2: [{content: 'User2 Tweet1', timestamp: 1652530552000 }]
-    },
-    friends: [
-      {src: 'display-picture.png', name: 'Elon Musk', handle: '@teslaBoy'},
-      {src: 'display-picture.png', name: 'Adrian Monk', handle: '@detective:)'},
-      {src: 'display-picture.png', name: 'Kevin Hart', handle: '@miniRock'}
-    ]
+    }
   },
   getters: {
     ifUserExists: (state) => (username) => {
@@ -96,6 +91,19 @@ export default new Vuex.Store({
         return state.followers[username]
       }
       return [];
+    },
+    getNotFollowedUsers: (state, getters) => {
+      let users = Object.keys(state.users);
+      let followingUsers = getters.getFollowing(state.loggedInUser);
+      users = users.filter(user => !followingUsers.includes(user));
+      users.splice(users.indexOf(state.loggedInUser), 1);
+      return users.map(user => {
+        return { 
+          name: state.users[user].name, 
+          username: state.users[user].username
+        }
+      });
+
     }
   },
   mutations: {
@@ -115,14 +123,29 @@ export default new Vuex.Store({
       state.tweets[state.loggedInUser].push(newTweet);
     },
     followUser (state, username) {
+      state.following = {
+        ...state.following
+      }
+      state.followers = {
+        ...state.followers
+      }
+      state.following[state.loggedInUser] = state.following[state.loggedInUser] || [];
       if(!state.following[state.loggedInUser] || !state.following[state.loggedInUser].includes(username)) {
         state.following[state.loggedInUser] = [...state.following[state.loggedInUser], username];
       }
+      
+      state.followers[username] = state.followers[username] || [];
       if(!state.followers[username] || !state.followers[username].includes(state.loggedInUser)) {
         state.followers[username] = [...state.followers[username], state.loggedInUser];
       }
     }, 
     unfollowUser (state, username) {
+      state.following = {
+        ...state.following
+      }
+      state.followers = {
+        ...state.followers
+      }
       if(state.following[state.loggedInUser] && state.following[state.loggedInUser].includes(username)) {
         let index = state.following[state.loggedInUser].indexOf(username);
         state.following[state.loggedInUser].splice(index, 1);

@@ -18,17 +18,15 @@
       </button>
     </div>
 
-    <div class="w-full rounded-lg bg-lightest my-4">
+    <div v-if="getNotFollowedUsers.length" class="w-full rounded-lg bg-lightest my-4">
       <p class="p-3 text-xl font-bold">Who to Follow</p>
-      <button v-for="friend in friends" :key=friend.handle class="w-full flex hover:bg-lighter p-3">
-        <img :src="`${ friend.src }`" class="w-12 h-12 rounded-full border border-lighter" />
+      <button v-for="user in getNotFollowedUsers" :key=user.username class="w-full flex hover:bg-lighter p-3">
+        <img src="../assets/display-picture.png" class="w-12 h-12 rounded-full border border-lighter" />
         <div class="hidden lg:block ml-4">
-          <p class="text-md font-semibold leading-tight"> {{ friend.name }} </p>
-          <p class="text-md text-dark leading-tight"> {{ friend.handle }} </p>
+          <p class="text-md font-semibold leading-tight"> {{user.name}} </p>
+          <p class="text-md text-dark leading-tight"> {{user.username}} </p>
         </div>
-        <button class="ml-auto text-sm text-white font-medium bg-black py-1 px-4 rounded-full">
-          Follow
-        </button>
+        <button @click="followUser(user.username)" class="rounded-full text-sm text-white font-medium ml-auto px-4 py-1 bg-black hover:bg-dark">Follow</button>
       </button>
       <button class="p-3 w-full hover:bg-lighter text-left text-blue rounded-b-lg">
         Show More
@@ -48,13 +46,20 @@
           {top: 'Pop', title: 'Blue Ivy', bottom: '40k tweets'},
           {top: 'Trending in US', title: 'Denim Day', bottom: '40k tweets'},
           {top: 'Trending', title: 'When Beyonce', bottom: '25.4k tweets'},
-        ],
-        // friends: [
-        //   {src: 'display-picture.png', name: 'Elon Musk', handle: '@teslaBoy'},
-        //   {src: 'display-picture.png', name: 'Adrian Monk', handle: '@detective:)'},
-        //   {src: 'display-picture.png', name: 'Kevin Hart', handle: '@miniRock'}
-        // ],
-        friends: this.$store.state.friends,
+        ]
+      }
+    },
+    methods: {
+      followUser(username) {
+        this.$store.commit('followUser', username);
+      },
+      unfollowUser(username) {
+        this.$store.commit('unfollowUser', username);
+      }
+    },
+    computed: {
+      getNotFollowedUsers() {
+        return this.$store.getters.getNotFollowedUsers
       }
     }
   }

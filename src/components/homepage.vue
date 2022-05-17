@@ -70,9 +70,6 @@
         moment: moment,
         icons: this.$store.state.icons,
         tweetDisabled: true,
-        tweets: this.$store.getters.getFeed 
-          ? this.$store.getters.getFeed.sort((a,b) => {return b.timestamp - a.timestamp}) 
-          : [],
         tweet: {content: ''}
       }
     },
@@ -96,7 +93,18 @@
         this.$store.commit('addTweet', newTweet)
         this.tweetDisabled = true;
         this.updateFeed()
+      },
+      sortedTweets (tweets) {
+        return tweets.sort((a,b) => {return b.timestamp - a.timestamp});
       }
     },
+    computed: {
+      tweets() {
+        let tweets = this.$store.getters.getFeed 
+          ? this.sortedTweets(this.$store.getters.getFeed) 
+          : [];
+        return tweets;
+      }
+    }
   }
 </script>
