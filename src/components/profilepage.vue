@@ -26,7 +26,8 @@
         </div>
         <div>
           <button v-if='!differentUser' class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Edit Profile</button>
-          <button v-if='differentUser' class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Follow</button>
+          <button v-if='differentUser && !isFollowing' @click="followUser()" class="border border-light rounded-full text-white font-medium px-3 py-1 bg-black hover:bg-dark">Follow</button>
+          <button v-if='differentUser && isFollowing' @click="unfollowUser()" class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Following</button>
         </div>
       </div>
     </div>
@@ -86,11 +87,29 @@
         differentUser: this.$route.params.username !== this.$store.state.loggedInUser,
         userInfo: this.$store.getters.getUserInfo(this.$route.params.username),
         tweets: this.$store.getters.getUserTweets(this.$route.params.username),
-        following: this.$store.getters.getFollowing(this.$route.params.username),
-        followers: this.$store.getters.getFollowers(this.$route.params.username),
       }
     },
     methods: {
+      followUser() {
+        this.$store.commit('followUser', this.$route.params.username);
+      },
+      unfollowUser() {
+        this.$store.commit('unfollowUser', this.$route.params.username);
+      }
+    },
+    computed: {
+      following() {
+        return this.$store.getters.getFollowing(this.$route.params.username);
+      },
+      followers() {
+        return this.$store.getters.getFollowers(this.$route.params.username);
+      },
+      isFollowing() {
+        if(this.followers.includes(this.$store.state.loggedInUser)) {
+          return true;
+        }
+        return false;
+      }
     }
   }
 </script>

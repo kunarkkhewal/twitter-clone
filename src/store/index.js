@@ -114,6 +114,24 @@ export default new Vuex.Store({
     addTweet (state, newTweet) {
       state.tweets[state.loggedInUser].push(newTweet);
     },
+    followUser (state, username) {
+      if(!state.following[state.loggedInUser] || !state.following[state.loggedInUser].includes(username)) {
+        state.following[state.loggedInUser] = [...state.following[state.loggedInUser], username];
+      }
+      if(!state.followers[username] || !state.followers[username].includes(state.loggedInUser)) {
+        state.followers[username] = [...state.followers[username], state.loggedInUser];
+      }
+    }, 
+    unfollowUser (state, username) {
+      if(state.following[state.loggedInUser] && state.following[state.loggedInUser].includes(username)) {
+        let index = state.following[state.loggedInUser].indexOf(username);
+        state.following[state.loggedInUser].splice(index, 1);
+      }
+      if(state.followers[username] && state.followers[username].includes(state.loggedInUser)) {
+        let index = state.followers[username].indexOf(state.loggedInUser);
+        state.followers[username].splice(index, 1);
+      }
+    }
   },
   actions: {
     login ({ commit }, username) {
