@@ -31,17 +31,13 @@
         </div>
       </div>
     </div>
-    <!-- need to see for col-reverse -->
     <div class="flex flex-col-reverse"> 
-      <!-- {{tweets}} -->
       <div v-for="tweet in tweets" :key=tweet.timestamp class="w-full p-4 border-b hover:bg-lightest flex">
         <div class="mr-4">
-          <!-- todo: dp -->
           <img src="../assets/display-picture.png" class="h-12 w-12 rounded-full"/>
         </div>
         <div class="w-full">
           <div class="flex items-center w-full">
-            <!-- make this all dynamic -->
             <p class="font-semibold"> {{userInfo.name}} </p>
             <p class="text-sm text-dark ml-2"> @{{$route.params.username}} </p>
             <p class="text-sm text-dark ml-2"><span class="mr-1 font-extrabold">.</span> {{moment(tweet.timestamp).fromNow()}} </p>
@@ -70,7 +66,6 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 

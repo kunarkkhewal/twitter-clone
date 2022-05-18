@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoggedIn: false,
-    loggedInUser: '', //todo: format can be changed later
+    loggedInUser: '',
     users: {
       kunark: {password: 'password', name: 'Kunark', username: 'kunark', location: 'New Delhi', joined: 'July 2017'},
       user1: {password: 'password', name: 'User 1', username: 'user1', location: 'New Delhi', joined: 'July 2018'},
@@ -29,11 +29,28 @@ export default new Vuex.Store({
       user1: ['kunark'],
       user2: ['kunark']
     },
+    tabs: [
+      {icon: 'fas fa-home', title: 'Home', id:'home'},
+      {icon: 'fas fa-hashtag', title: 'Explore', id: 'explore'},
+      {icon: 'far fa-bell', title: 'Notifications', id: 'notifications'},
+      {icon: 'far fa-envelope', title: 'Messages', id: 'messages'},
+      {icon: 'far fa-bookmark', title: 'Bookmarks', id: 'bookmarks'},
+      {icon: 'fas fa-clipboard-list', title: 'Lists', id: 'lists'},
+      {icon: 'far fa-user', title: 'Profile', id: 'profile'},
+      {icon: 'fas fa-ellipsis-h', title: 'More', id: 'more'}
+    ],
     tweets: {
-      kunark: [{content: 'It is so nice outside!', timestamp: 1652616992000 }], //todo: add likes and all
+      kunark: [{content: 'It is good!!!', timestamp: 1652616992000 }],
       user1: [{content: 'User1 Tweet1', timestamp: 1652420152000 }],
       user2: [{content: 'User2 Tweet1', timestamp: 1652530552000 }]
-    }
+    },
+    trending: [
+      {top: 'Trending in India', title: 'Shivling', bottom: 'Trending: Gyanvapi'},
+      {top: 'Music', title: 'Srivalli', bottom: '135K Tweets'},
+      {top: 'Pop', title: 'Nucleya', bottom: '40k tweets'},
+      {top: 'Trending in World', title: 'Rus vs Ukr War', bottom: '40k tweets'},
+      {top: 'Trending', title: 'I am lit', bottom: '25.4k tweets'},
+    ]
   },
   getters: {
     ifUserExists: (state) => (username) => {
@@ -50,7 +67,6 @@ export default new Vuex.Store({
     },
     getUserInfo: (state) => (username) => {
       if (state.users[username]) {
-        // return {name: state.users[username].name}
         const userInfo = {...state.users[username]};
         delete userInfo.password
         return userInfo
@@ -103,7 +119,6 @@ export default new Vuex.Store({
           username: state.users[user].username
         }
       });
-
     }
   },
   mutations: {
@@ -133,7 +148,6 @@ export default new Vuex.Store({
       if(!state.following[state.loggedInUser] || !state.following[state.loggedInUser].includes(username)) {
         state.following[state.loggedInUser] = [...state.following[state.loggedInUser], username];
       }
-      
       state.followers[username] = state.followers[username] || [];
       if(!state.followers[username] || !state.followers[username].includes(state.loggedInUser)) {
         state.followers[username] = [...state.followers[username], state.loggedInUser];
@@ -169,7 +183,5 @@ export default new Vuex.Store({
       commit('createUser', userInfo);
       router.push('/login');
     }
-  },
-  modules: {
   }
 })

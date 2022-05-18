@@ -4,7 +4,7 @@
       <!-- header -->
       <div class="text-center flex flex-row w-[400px]">
         <div class="w-[45%] md:w-[70%] pl-2 text-left"><button class="w-8 h-8"><i class="fas fa-times text-2xl"></i></button></div>
-          <i class="fab fa-twitter h-12 w-12 text-3xl text-blue"></i>
+        <i class="fab fa-twitter h-12 w-12 text-3xl text-blue"></i>
       </div>
 
       <!-- main -->

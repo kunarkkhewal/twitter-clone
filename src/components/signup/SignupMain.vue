@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    export default {
+  export default {
     name: 'SignupMainPage',
     data() {
       return {
