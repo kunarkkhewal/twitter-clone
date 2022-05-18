@@ -4,22 +4,7 @@
       <h1 class="text-xl font-bold">Home</h1>
       <i class="far fa-star text-xl text-blue hover:bg-lighter py-1 px-2 rounded-full"></i>
     </div>
-    <div class="pb-10 md:pb-3 px-5 py-3 border-b border-lighter flex">
-      <div class="flex-none">
-        <router-link :to="`/profile/${$store.state.loggedInUser}`"><img src="display-picture.png" class="flex-none w-12 h-12 rounded-full border border-lighter"/></router-link>
-      </div>
-      <form @submit.prevent = "addNewTweet" class="w-full px-4 relative">
-        <textarea v-model="tweet.content" @keypress="isTweeting" @keyup.delete="isTweeting" placeholder="What's happening?" 
-          class="mt-3 w-full pb-1 resize-none focus:outline-none placeholder:text-dark placeholder:text-xl"/>
-        <p class="-mt-2 pb-3 pl-1 border-b border-lighter text-sm font-bold text-blue"><i class="pr-2 fas fa-globe-americas"></i>Everyone can reply</p>
-        <div class="pt-2 flex items-center">
-          <i v-for="icon in icons" :key=icon.id :class="`text-lg text-blue p-2 px-3 rounded-full cursor-pointer ${icon.icon} hover:bg-lightblue`"></i>
-        </div>
-        <button type="submit" class="h-10 px-4 text-white font-semibold bg-blue hover:bg-darkblue focus:outline-none rounded-full absolute -bottom-8 md:bottom-0 right-0 disabled:bg-blue/50" :disabled="tweetDisabled">
-          Tweet
-        </button>
-      </form>
-    </div>
+    <TweetSection />
     <div v-for="tweet in tweets" :key=tweet.timestamp class="w-full p-4 border-b hover:bg-lightest flex">
       <div class="mr-4">
         <router-link :to="`/profile/${tweet.username}`">
@@ -60,10 +45,12 @@
 
 <script>
   import moment from "moment";
+  import TweetSection from "../components/tweet.vue";
 
   export default {
     name: 'HomePage',
     components: {
+      TweetSection
     },
     data() {
       return {
@@ -81,9 +68,6 @@
           this.tweetDisabled = true;
         }
       },
-      updateFeed() {
-        this.tweets = this.$store.getters.getFeed.sort((a,b) => {return b.timestamp - a.timestamp});
-      },
       addNewTweet () {
         let newTweet = {
           content: this.tweet.content,
@@ -92,7 +76,6 @@
         this.tweet.content = '';
         this.$store.commit('addTweet', newTweet)
         this.tweetDisabled = true;
-        this.updateFeed()
       },
       sortedTweets (tweets) {
         return tweets.sort((a,b) => {return b.timestamp - a.timestamp});

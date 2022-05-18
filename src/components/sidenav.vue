@@ -14,7 +14,14 @@
           </router-link>
         </button>
       </div>
-      <button class="text-white bg-blue rounded-full font-bold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-3 px-5 hover:bg-darkblue">
+
+      <div  v-if="tweetClicked" class="z-10 fixed inset-0 w-full h-screen flex items-center justify-center bg-dark/50 ">
+        <div class="relative w-full max-w-2xl bg-white shadow-lg rounded-lg p-8">
+          <div @click="tweetClicked=false" class="absolute top-0 left-0"><button class="w-8 h-8"><i class="fas fa-times text-2xl"></i></button></div>
+          <TweetSection @tweetmade = "tweetClicked=false"/>
+        </div>
+      </div>
+      <button @click="tweetClicked=true" class="text-white bg-blue rounded-full font-bold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-3 px-5 hover:bg-darkblue">
         <p class="hidden lg:block">Tweet</p>
         <i class="fas fa-plus lg:hidden"></i>
       </button>
@@ -49,20 +56,26 @@
 </template>
 
 <script>
-export default {
-  name: 'SideNav',
-  data() {
-    return {
-      tabs: this.$store.state.tabs,
-      id: 'home',
-      dropdown: false,
-      userInfo: this.$store.getters.getUserInfo(this.$store.state.loggedInUser),
-    }
-  },
-  methods: {
-    logout () {
-      this.$store.dispatch('logout');
+  import TweetSection from "../components/tweet.vue";
+
+  export default {
+    name: 'SideNav',
+    components: {
+      TweetSection
+    },
+    data() {
+      return {
+        tabs: this.$store.state.tabs,
+        id: 'home',
+        dropdown: false,
+        userInfo: this.$store.getters.getUserInfo(this.$store.state.loggedInUser),
+        tweetClicked: false,
+      }
+    },
+    methods: {
+      logout () {
+        this.$store.dispatch('logout');
+      }
     }
   }
-}
 </script>
