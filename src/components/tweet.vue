@@ -4,7 +4,7 @@
       <router-link :to="`/profile/${$store.state.loggedInUser}`"><img src="../assets/display-picture.png" class="flex-none w-12 h-12 rounded-full border border-lighter"/></router-link>
     </div>
     <form @submit.prevent = "addNewTweet" class="w-full px-4 relative">
-      <textarea v-model="tweet.content" @keypress="isTweeting" @keyup.delete="isTweeting" placeholder="What's happening?" 
+      <textarea ref="input" v-model="tweet.content" @keypress="isTweeting" @keyup.delete="isTweeting" placeholder="What's happening?" 
         class="mt-3 w-full pb-1 resize-none focus:outline-none placeholder:text-dark placeholder:text-xl"/>
       <p class="-mt-2 pb-3 pl-1 border-b border-lighter text-sm font-bold text-blue"><i class="pr-2 fas fa-globe-americas"></i>Everyone can reply</p>
       <div class="pt-2 flex items-center">
@@ -29,6 +29,9 @@
         tweetDisabled: true,
         tweet: {content: ''}
       }
+    },
+    mounted() {
+      this.$refs.input.focus()
     },
     methods: {
       isTweeting () {

@@ -27,7 +27,11 @@
         <div>
           <button v-if='!differentUser' class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Edit Profile</button>
           <button v-if='differentUser && !isFollowing' @click="followUser()" class="border border-light rounded-full text-white font-medium px-3 py-1 bg-black hover:bg-dark">Follow</button>
-          <button v-if='differentUser && isFollowing' @click="unfollowUser()" class="border border-light rounded-full text-black font-medium px-3 py-1 hover:bg-light">Following</button>
+          <button v-if='differentUser && isFollowing' 
+            @mouseover="followingText='Unfollow'"
+            @mouseleave="followingText='Following'"
+            @click="unfollowUser()" 
+            class="border border-light rounded-full text-black font-medium px-4 py-1 hover:px-5 hover:text-rose-500 hover:bg-rose-100 hover:border hover:border-rose-500 hover:border-1">{{followingText}}</button>
         </div>
       </div>
     </div>
@@ -82,6 +86,7 @@
         differentUser: this.$route.params.username !== this.$store.state.loggedInUser,
         userInfo: this.$store.getters.getUserInfo(this.$route.params.username),
         tweets: this.$store.getters.getUserTweets(this.$route.params.username),
+        followingText: 'Following'
       }
     },
     methods: {
