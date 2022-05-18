@@ -1,7 +1,7 @@
 <template>
   <div class="pb-10 md:pb-3 px-5 py-3 border-b border-lighter flex">
     <div class="flex-none">
-      <router-link :to="`/profile/${$store.state.loggedInUser}`"><img src="display-picture.png" class="flex-none w-12 h-12 rounded-full border border-lighter"/></router-link>
+      <router-link :to="`/profile/${$store.state.loggedInUser}`"><img src="../assets/display-picture.png" class="flex-none w-12 h-12 rounded-full border border-lighter"/></router-link>
     </div>
     <form @submit.prevent = "addNewTweet" class="w-full px-4 relative">
       <textarea v-model="tweet.content" @keypress="isTweeting" @keyup.delete="isTweeting" placeholder="What's happening?" 

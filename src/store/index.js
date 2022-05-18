@@ -135,6 +135,10 @@ export default new Vuex.Store({
       state.users[userInfo.username] = userInfo;
     },
     addTweet (state, newTweet) {
+      state.tweets = {
+        ...state.tweets
+      }
+      state.tweets[state.loggedInUser] = state.tweets[state.loggedInUser] || [];
       state.tweets[state.loggedInUser].push(newTweet);
     },
     followUser (state, username) {

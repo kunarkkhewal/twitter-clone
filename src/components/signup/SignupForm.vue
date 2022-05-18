@@ -7,27 +7,29 @@
         <i class="fab fa-twitter h-12 w-12 text-3xl text-blue"></i>
       </div>
 
-      <!-- main -->
-      <div class="px-4 md:px-20 text-center m-auto my-12 md:my-6 overflow-y-scroll h-[50%]">
-        <h2 class="text-3xl font-bold mb-4 text-left">Create your account</h2>
-        <input @keypress="isSigningUp" @keyup.delete="isSigningUp" v-model="userInfo.name" ref="input" class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
-          focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="text" placeholder="Name">
-        <input @keypress="isSigningUp" @keyup.delete="isSigningUp" @blur='checkUserExists' v-model="userInfo.username" :class="`border border-slate-300 rounded-md w-full ${!ifUserExists ? 'mb-2 focus:mb-1.5' : 'mb-0 focus:mb-0 focus:border-rose-500/90 focus:placeholder:text-rose-500'} py-4 px-2 cursor-pointer placeholder:text-gray-500 
-          focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500`" type="text" placeholder="Username">
-        <label v-if="ifUserExists" class="block text-left text-sm text-rose-500 mb-2 focus:mb-1.5">username already exists</label>
-        <select @change="isSigningUp" class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
-          focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" v-model="userInfo.location">
-          <option value="" selected disabled hidden>Choose Location</option>
-          <option v-for="location in locations" :key="location" :value="location"> {{location}}</option>
-        </select>
-        <input @keypress="isSigningUp" @keyup.delete="isSigningUp" v-model="userInfo.password" class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
-          focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="password" placeholder="Password">
-      </div>
+      <form @submit.prevent="createUser">
+        <!-- main -->
+        <div class="px-4 md:px-20 text-center m-auto my-12 md:my-6 overflow-y-scroll h-[50%]">
+          <h2 class="text-3xl font-bold mb-4 text-left">Create your account</h2>
+          <input @keypress="isSigningUp" @keyup.delete="isSigningUp" v-model="userInfo.name" ref="input" class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
+            focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="text" placeholder="Name">
+          <input @keypress="isSigningUp" @keyup.delete="isSigningUp" @blur='checkUserExists' v-model="userInfo.username" :class="`border border-slate-300 rounded-md w-full ${!ifUserExists ? 'mb-2 focus:mb-1.5' : 'mb-0 focus:mb-0 focus:border-rose-500/90 focus:placeholder:text-rose-500'} py-4 px-2 cursor-pointer placeholder:text-gray-500 
+            focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500`" type="text" placeholder="Username">
+          <label v-if="ifUserExists" class="block text-left text-sm text-rose-500 mb-2 focus:mb-1.5">username already exists</label>
+          <select @change="isSigningUp" class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
+            focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" v-model="userInfo.location">
+            <option value="" selected disabled hidden>Choose Location</option>
+            <option v-for="location in locations" :key="location" :value="location"> {{location}}</option>
+          </select>
+          <input @keypress="isSigningUp" @keyup.delete="isSigningUp" v-model="userInfo.password" class="border border-slate-300 rounded-md w-full mb-2 py-4 px-2 cursor-pointer placeholder:text-gray-500 
+            focus:outline-none focus:border-cyan-500 focus:border-2 focus:placeholder:text-cyan-500 focus:mb-1.5" type="password" placeholder="Password">
+        </div>
 
-      <!-- footer -->
-      <div class="w-full text-left m-auto my-6">
-        <button @click="createUser" class="block w-96 rounded-full m-auto my-2 py-2 bg-black text-white font-bold text-md hover:bg-gray-900 disabled:bg-dark" :disabled="signupDisabled">Next</button>
-      </div>
+        <!-- footer -->
+        <div class="w-full text-left m-auto my-6">
+          <button @click="createUser" class="block w-96 rounded-full m-auto my-2 py-2 bg-black text-white font-bold text-md hover:bg-gray-900 disabled:bg-dark" :disabled="signupDisabled">Next</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
