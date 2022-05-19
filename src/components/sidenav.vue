@@ -4,17 +4,15 @@
       <button class="h-12 w-12 hover:bg-lightblue text-3xl border-0 rounded-full text-blue">
         <i class="fab fa-twitter"></i>
       </button>
-      <div>
-
+      <div class="flex flex-col justify-between">
         <button v-for="tab in tabs" @click="id = tab.id" :key=tab.id :title="tab.title">
           <router-link :to="tab.id === 'profile' ? `/profile/${$store.state.loggedInUser}` : '/'" :class="`focus:outline-none flex items-center py-1 px-4 font-normal hover:bg-lighter 
-        rounded-full mr-auto mb-3 ${ id === tab.id ? 'font-extrabold' : ''}`">
+            rounded-full mr-auto mb-3 ${ id === tab.id ? 'font-extrabold' : ''}`">
             <i :class="`${ tab.icon } ${ id === tab.id ? 'font-bold' : ''} text-2xl mr-4 text-left`"></i>
             <p class="text-xl text-left hidden lg:block"> {{ tab.title }} </p>
           </router-link>
         </button>
       </div>
-
       <div  v-if="tweetClicked" class="z-10 fixed inset-0 w-full h-screen flex items-center justify-center bg-dark/50 ">
         <div class="relative w-full max-w-2xl bg-white shadow-lg rounded-lg p-8">
           <div @click="tweetClicked=false" class="absolute top-0 left-0"><button class="w-8 h-8"><i class="fas fa-times text-2xl"></i></button></div>

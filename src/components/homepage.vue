@@ -13,8 +13,8 @@
       </div>
       <div class="w-full">
         <div class="flex items-center w-full">
-          <p class="font-semibold"> {{ tweet.name }} </p>
-          <p class="text-sm text-dark ml-2"> @{{ tweet.username }} </p>
+          <p class="font-semibold hidden md:block"> {{ tweet.name }} </p>
+          <p class="text-sm text-dark ml-0 md:ml-2"> @{{ tweet.username }} </p>
           <p class="text-sm text-dark ml-2"><span class="mr-1 font-extrabold">.</span> {{ moment(tweet.timestamp).fromNow() }} </p>
           <i class="fas fa-ellipsis-h text-dark ml-auto cursor-pointer p-2 rounded-full hover:bg-blue/20 hover:text-blue"></i>
         </div>
