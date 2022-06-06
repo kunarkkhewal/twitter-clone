@@ -27,7 +27,7 @@
 
         <!-- footer -->
         <div class="w-full text-left m-auto my-6">
-          <button @click="createUser" class="block w-full md:w-96 rounded-full m-auto my-2 py-2 bg-black text-white font-bold text-md hover:bg-gray-900 disabled:bg-dark" :disabled="signupDisabled">Next</button>
+          <button class="block w-full md:w-96 rounded-full m-auto my-2 py-2 bg-black text-white font-bold text-md hover:bg-gray-900 disabled:bg-dark" :disabled="signupDisabled">Next</button>
         </div>
       </form>
     </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import moment from 'moment';
+  import axios from 'axios';
 
   export default {
     name: 'SignupFormPage',
@@ -63,8 +63,9 @@
           this.signupDisabled = true;
         }
       },
-      checkUserExists () {
-        if (this.$store.getters.ifUserExists(this.userInfo.username)) {
+      async checkUserExists () {
+        const user = await axios.get(`${this.$store.state.server_host}/user/ifusernameexists/${this.userInfo.username}`);
+        if (user.data === true) {
           this.ifUserExists = true;
           this.userInfo.password = '';
         } else {
@@ -73,7 +74,6 @@
         }
       },
       createUser () {
-        this.userInfo.joined = moment().format("MMM YYYY");
         this.$store.dispatch('createUser', this.userInfo);
       }
     }

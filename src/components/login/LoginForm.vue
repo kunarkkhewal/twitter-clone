@@ -58,7 +58,7 @@
         }
       },
       async loginUser () {
-        const user = await axios.get(`http://localhost:5000/user/username/${this.username}`);
+        const user = await axios.get(`${this.$store.state.server_host}/user/username/${this.username}`);
         if (user.data && user.data.username) {
           const userPassword = user.data.password;
           if (userPassword !== '' && userPassword === this.password) {

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import router from '../router/index';
+import axios from 'axios';
 
 Vue.use(Vuex)
 
@@ -8,6 +9,7 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     loggedInUser: '',
+    server_host: 'http://localhost:5000',
     users: {},
     // users: {
     //   kunark: {password: 'password', name: 'Kunark', username: 'kunark', location: 'New Delhi', joined: 'July 2017'},
@@ -134,12 +136,10 @@ export default new Vuex.Store({
       state.users = {}
     },
     updateLoggedInUser: (state, username) => {
-      state.isLoggedIn = true;
-      state.loggedInUser = username;
-    },
-    createUser (state, userInfo) {
-      state.users[userInfo.username] = {}
-      state.users[userInfo.username] = userInfo;
+      if (username) {
+        state.isLoggedIn = true;
+        state.loggedInUser = username;
+      }
     },
     addTweet (state, newTweet) {
       state.tweets = {
@@ -185,20 +185,20 @@ export default new Vuex.Store({
     login ({ commit }, username) {
       commit('login', username);
       localStorage.setItem('isLoggedIn', true);
-      localStorage.setItem('loggenInUser', username);
+      localStorage.setItem('loggedInUser', username);
       router.push('/');
     },
     logout ({ commit }) {
       commit('logout');
       localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('loggenInUser');
+      localStorage.removeItem('loggedInUser');
       router.push('/login');
     },
     fetchLoggedInUser({ commit }) {
-      commit('updateLoggedInUser', localStorage.getItem('loggenInUser'));
+      commit('updateLoggedInUser', localStorage.getItem('loggedInUser'));
     },
-    createUser ({ commit }, userInfo) {
-      commit('createUser', userInfo);
+    async createUser ({ state }, userInfo) {
+      await axios.post(`${state.server_host}/user`, userInfo)
       router.push('/login');
     }
   }
