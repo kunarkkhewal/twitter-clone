@@ -43,6 +43,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  store.dispatch('fetchLoggedInUser');
   if (to.fullPath === '/' || to.fullPath.includes('profile')) {
     if (!store.state.isLoggedIn) {
       next('/login');

@@ -8,11 +8,12 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     loggedInUser: '',
-    users: {
-      kunark: {password: 'password', name: 'Kunark', username: 'kunark', location: 'New Delhi', joined: 'July 2017'},
-      user1: {password: 'password', name: 'User 1', username: 'user1', location: 'New Delhi', joined: 'July 2018'},
-      user2: {password: 'password', name: 'User 2', username: 'user2', location: 'New Delhi', joined: 'July 2019'}
-    },
+    users: {},
+    // users: {
+    //   kunark: {password: 'password', name: 'Kunark', username: 'kunark', location: 'New Delhi', joined: 'July 2017'},
+    //   user1: {password: 'password', name: 'User 1', username: 'user1', location: 'New Delhi', joined: 'July 2018'},
+    //   user2: {password: 'password', name: 'User 2', username: 'user2', location: 'New Delhi', joined: 'July 2019'}
+    // },
     icons: [
       {icon: 'far fa-image', id:'image'},
       {icon: 'fas fa-poll-h', id: 'poll'},
@@ -78,7 +79,7 @@ export default new Vuex.Store({
         let tweets = state.tweets[username]
         tweets.forEach(tweet => {
           tweet.username = username;
-          tweet.name = state.users[username].name
+          tweet.name = state.users[username] && state.users[username].name
         })
         return tweets;
       }
@@ -122,13 +123,19 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    login (state, username) {
+    login (state, username, userData) {
       state.isLoggedIn = true;
       state.loggedInUser = username;
+      state.users[username] = userData
     },
     logout (state) {
       state.isLoggedIn = false;
       state.loggedInUser = '';
+      state.users = {}
+    },
+    updateLoggedInUser: (state, username) => {
+      state.isLoggedIn = true;
+      state.loggedInUser = username;
     },
     createUser (state, userInfo) {
       state.users[userInfo.username] = {}
@@ -177,11 +184,18 @@ export default new Vuex.Store({
   actions: {
     login ({ commit }, username) {
       commit('login', username);
+      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('loggenInUser', username);
       router.push('/');
     },
     logout ({ commit }) {
       commit('logout');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('loggenInUser');
       router.push('/login');
+    },
+    fetchLoggedInUser({ commit }) {
+      commit('updateLoggedInUser', localStorage.getItem('loggenInUser'));
     },
     createUser ({ commit }, userInfo) {
       commit('createUser', userInfo);
