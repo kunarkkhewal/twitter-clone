@@ -32,6 +32,7 @@
 
 <script>
   import swal from 'sweetalert';
+  import axios from 'axios';
 
   export default {
     name: 'LoginFormPage',
@@ -56,9 +57,10 @@
           this.loginDisabled = true;
         }
       },
-      loginUser () {
-        if (this.$store.getters.ifUserExists(this.username)) {
-          const userPassword = this.$store.getters.getUserPassword(this.username);
+      async loginUser () {
+        const user = await axios.get(`http://localhost:5000/user/username/${this.username}`);
+        if (user.data && user.data.username) {
+          const userPassword = user.data.password;
           if (userPassword !== '' && userPassword === this.password) {
             this.$store.dispatch('login', this.username);
           } else {
