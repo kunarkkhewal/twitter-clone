@@ -17,11 +17,11 @@
           <p class="text-md text-dark font-normal mb-2">@{{$route.params.username}}</p>
           <p class="text-dark font-medium">
             <span><i class="fas fa-map-marker-alt"></i> {{userInfo.location}}</span> 
-            <span class="ml-4"><i class="fas fa-calendar-alt"></i> Joined {{userInfo.joined}}</span>
+            <span class="ml-4"><i class="fas fa-calendar-alt"></i> Joined {{moment(userInfo.created_at).format("MMM YYYY")}}</span>
           </p>
           <p class="text-dark">
-            <span><span class="text-black font-semibold">{{following.length}}</span> Following</span> 
-            <span class="ml-4"><span class="text-black font-semibold">{{followers.length}}</span> Followers</span>
+            <span><span class="text-black font-semibold">{{userInfo.followings}}</span> Following</span> 
+            <span class="ml-4"><span class="text-black font-semibold">{{userInfo.followers}}</span> Followers</span>
           </p>
         </div>
         <div>
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="flex flex-col-reverse"> 
-      <div v-for="tweet in tweets" :key=tweet.timestamp class="w-full p-4 border-b hover:bg-lightest flex">
+      <div v-for="tweet in tweets" :key=tweet.id class="w-full p-4 border-b hover:bg-lightest flex">
         <div class="mr-4">
           <img src="../assets/display-picture.png" class="h-12 w-12 rounded-full"/>
         </div>
@@ -84,10 +84,12 @@
       return {
         moment: moment,
         differentUser: this.$route.params.username !== this.$store.state.loggedInUser,
-        userInfo: this.$store.getters.getUserInfo(this.$route.params.username),
-        tweets: this.$store.getters.getUserTweets(this.$route.params.username),
         followingText: 'Following'
       }
+    },
+    async mounted() {
+      await this.$store.dispatch('getProfileUser', this.$route.params.username);
+      await this.$store.dispatch('getUserTweets', this.userInfo.id);
     },
     methods: {
       followUser() {
@@ -95,9 +97,27 @@
       },
       unfollowUser() {
         this.$store.commit('unfollowUser', this.$route.params.username);
+      },
+      sortedTweets (tweets) {
+        tweets = tweets.map(tweet => {
+          return {...tweet, timestamp: moment(tweet.created_at)}
+        })
+        return tweets.sort((a,b) => {return b.timestamp - a.timestamp});
       }
     },
     computed: {
+      userInfo() {
+        let user = this.$store.state.profileUser.id
+          ? this.$store.state.profileUser
+          : {}
+        return user;
+      },
+      tweets() {
+        let tweets = this.$store.state.tweets.length
+          ? this.sortedTweets(this.$store.state.tweets) 
+          : [];
+        return tweets;
+      },
       following() {
         return this.$store.getters.getFollowing(this.$route.params.username);
       },

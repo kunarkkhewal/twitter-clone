@@ -11,6 +11,7 @@ export default new Vuex.Store({
     loggedInUser: '',
     server_host: 'http://localhost:5000',
     users: {},
+    profileUser: {},
     // users: {
     //   kunark: {password: 'password', name: 'Kunark', username: 'kunark', location: 'New Delhi', joined: 'July 2017'},
     //   user1: {password: 'password', name: 'User 1', username: 'user1', location: 'New Delhi', joined: 'July 2018'},
@@ -23,15 +24,17 @@ export default new Vuex.Store({
       {icon: 'fas fa-calendar-alt', id: 'calendar'},
       {icon: 'fas fa-map-marker-alt', id: 'marker'}
     ],
-    following: {
-      kunark: ['user1', 'user2'],
-      user2: ['kunark']
-    },
-    followers: {
-      kunark: ['user2'],
-      user1: ['kunark'],
-      user2: ['kunark']
-    },
+    following: {},
+    // following: {
+    //   kunark: ['user1', 'user2'],
+    //   user2: ['kunark']
+    // },
+    followers: {},
+    // followers: {
+    //   kunark: ['user2'],
+    //   user1: ['kunark'],
+    //   user2: ['kunark']
+    // },
     tabs: [
       {icon: 'fas fa-home', title: 'Home', id:'home'},
       {icon: 'fas fa-hashtag', title: 'Explore', id: 'explore'},
@@ -144,6 +147,11 @@ export default new Vuex.Store({
         state.users[username] = userData;
       }
     },
+    addProfileUser: (state, user) => {
+      if(user.data && user.data.id) {
+        state.profileUser = user.data;
+      }
+    },
     addTweet (state, newTweet) {
       state.tweets = {
         ...state.tweets
@@ -212,10 +220,15 @@ export default new Vuex.Store({
       await axios.post(`${state.server_host}/user`, userInfo)
       router.push('/login');
     },
-    // async getUserTweets ({ state }, userid) {
-    //   const tweets = await axios.get(`${state.server_host}/tweet/user/${userid}`);
-
-    // },
+    async getProfileUser ({ state, commit }, username) {
+      const user = await axios.get(`${state.server_host}/user/username/${username}`);
+      commit('addProfileUser', user);
+    },
+    async getUserTweets ({ state, commit }) {
+      const userid = state.profileUser && state.profileUser.id
+      const tweets = await axios.get(`${state.server_host}/tweet/user/${userid}`);
+      commit('updateTweets', tweets);
+    },
     async getFeedTweets ({ state, commit }) {
       const userid = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
       const tweets = await axios.get(`${state.server_host}/tweet/feed/${userid}`);
