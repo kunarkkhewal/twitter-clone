@@ -62,7 +62,7 @@
         if (user.data && user.data.username) {
           const userPassword = user.data.password;
           if (userPassword !== '' && userPassword === this.password) {
-            this.$store.dispatch('login', this.username, user);
+            this.$store.dispatch('login', {username: this.username, userData: user.data});
           } else {
             this.password = '';
             this.loginDisabled = true;

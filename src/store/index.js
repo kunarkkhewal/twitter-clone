@@ -42,11 +42,12 @@ export default new Vuex.Store({
       {icon: 'far fa-user', title: 'Profile', id: 'profile'},
       {icon: 'fas fa-ellipsis-h', title: 'More', id: 'more'}
     ],
-    tweets: {
-      kunark: [{content: 'It is good!!!', timestamp: 1652616992000 }],
-      user1: [{content: 'User1 Tweet1', timestamp: 1652420152000 }],
-      user2: [{content: 'User2 Tweet1', timestamp: 1652530552000 }]
-    },
+    tweets: [],
+    // tweets: {
+    //   kunark: [{content: 'It is good!!!', timestamp: 1652616992000 }],
+    //   user1: [{content: 'User1 Tweet1', timestamp: 1652420152000 }],
+    //   user2: [{content: 'User2 Tweet1', timestamp: 1652530552000 }]
+    // },
     trending: [
       {top: 'Trending in India', title: 'Shivling', bottom: 'Trending: Gyanvapi'},
       {top: 'Music', title: 'Srivalli', bottom: '135K Tweets'},
@@ -88,17 +89,17 @@ export default new Vuex.Store({
       return [];
     },
     //Feed is for current logged in user
-    getFeed(state, getters) {
-      const users = [state.loggedInUser];
-      if (state.following[state.loggedInUser]) {
-        users.push(...state.following[state.loggedInUser])
-      }
-      let tweets = [];
-      users.forEach(user => {
-        tweets = [...tweets, ...getters.getUserTweets(user)]
-      })
-      return tweets; 
-    },
+    // getFeed(state, getters) {
+    //   const users = [state.loggedInUser];
+    //   if (state.following[state.loggedInUser]) {
+    //     users.push(...state.following[state.loggedInUser])
+    //   }
+    //   let tweets = [];
+    //   users.forEach(user => {
+    //     tweets = [...tweets, ...getters.getUserTweets(user)]
+    //   })
+    //   return tweets; 
+    // },
     getFollowing: (state) => (username) => {
       if (state.following[username]) {
         return state.following[username]
@@ -125,7 +126,7 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    login (state, username, userData) {
+    login (state, {username, userData}) {
       state.isLoggedIn = true;
       state.loggedInUser = username;
       state.users[username] = userData
@@ -133,12 +134,14 @@ export default new Vuex.Store({
     logout (state) {
       state.isLoggedIn = false;
       state.loggedInUser = '';
-      state.users = {}
+      state.users = {};
+      state.tweets = {};
     },
-    updateLoggedInUser: (state, username) => {
+    updateLoggedInUser: (state, {username, userData}) => {
       if (username) {
         state.isLoggedIn = true;
         state.loggedInUser = username;
+        state.users[username] = userData;
       }
     },
     addTweet (state, newTweet) {
@@ -147,6 +150,9 @@ export default new Vuex.Store({
       }
       state.tweets[state.loggedInUser] = state.tweets[state.loggedInUser] || [];
       state.tweets[state.loggedInUser].push(newTweet);
+    },
+    updateTweets (state, tweets) {
+      state.tweets = [...tweets.data];
     },
     followUser (state, username) {
       state.following = {
@@ -182,24 +188,38 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login ({ commit }, username) {
-      commit('login', username);
+    login ({ commit }, {username, userData}) {
+      commit('login', {username, userData});
       localStorage.setItem('isLoggedIn', true);
       localStorage.setItem('loggedInUser', username);
+      localStorage.setItem('userData', JSON.stringify(userData));
       router.push('/');
     },
     logout ({ commit }) {
       commit('logout');
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('userData');
       router.push('/login');
     },
     fetchLoggedInUser({ commit }) {
-      commit('updateLoggedInUser', localStorage.getItem('loggedInUser'));
+      commit('updateLoggedInUser', {
+        username: localStorage.getItem('loggedInUser'), 
+        userData: JSON.parse(localStorage.getItem('userData'))
+      });
     },
     async createUser ({ state }, userInfo) {
       await axios.post(`${state.server_host}/user`, userInfo)
       router.push('/login');
-    }
+    },
+    // async getUserTweets ({ state }, userid) {
+    //   const tweets = await axios.get(`${state.server_host}/tweet/user/${userid}`);
+
+    // },
+    async getFeedTweets ({ state, commit }) {
+      const userid = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
+      const tweets = await axios.get(`${state.server_host}/tweet/feed/${userid}`);
+      commit('updateTweets', tweets);
+    },
   }
 })

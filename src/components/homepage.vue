@@ -5,7 +5,7 @@
       <i class="far fa-star text-xl text-blue hover:bg-lighter py-1 px-2 rounded-full"></i>
     </div>
     <TweetSection />
-    <div v-for="tweet in tweets" :key=tweet.timestamp class="w-full p-4 border-b hover:bg-lightest flex">
+    <div v-for="tweet in tweets" :key=tweet.id class="w-full p-4 border-b hover:bg-lightest flex">
       <div class="mr-4">
         <router-link :to="`/profile/${tweet.username}`">
           <img src="display-picture.png" class="h-12 w-12 rounded-full"/>
@@ -15,7 +15,7 @@
         <div class="flex items-center w-full">
           <p class="font-semibold hidden md:block"> {{ tweet.name }} </p>
           <p class="text-sm text-dark ml-0 md:ml-2"> @{{ tweet.username }} </p>
-          <p class="text-sm text-dark ml-2"><span class="mr-1 font-extrabold">.</span> {{ moment(tweet.timestamp).fromNow() }} </p>
+          <p class="text-sm text-dark ml-2"><span class="mr-1 font-extrabold">.</span> {{ moment(tweet.created_at).fromNow() }} </p>
           <i class="fas fa-ellipsis-h text-dark ml-auto cursor-pointer p-2 rounded-full hover:bg-blue/20 hover:text-blue"></i>
         </div>
         <p class="py">
@@ -60,6 +60,9 @@
         tweet: {content: ''}
       }
     },
+    mounted() {
+      this.$store.dispatch('getFeedTweets');
+    },
     methods: {
       isTweeting () {
         if (this.tweet.content) {
@@ -68,23 +71,17 @@
           this.tweetDisabled = true;
         }
       },
-      addNewTweet () {
-        let newTweet = {
-          content: this.tweet.content,
-          timestamp: moment().valueOf()
-        };
-        this.tweet.content = '';
-        this.$store.commit('addTweet', newTweet)
-        this.tweetDisabled = true;
-      },
       sortedTweets (tweets) {
+        tweets = tweets.map(tweet => {
+          return {...tweet, timestamp: moment(tweet.created_at)}
+        })
         return tweets.sort((a,b) => {return b.timestamp - a.timestamp});
       }
     },
     computed: {
       tweets() {
-        let tweets = this.$store.getters.getFeed 
-          ? this.sortedTweets(this.$store.getters.getFeed) 
+        let tweets = this.$store.state.tweets.length
+          ? this.sortedTweets(this.$store.state.tweets) 
           : [];
         return tweets;
       }
