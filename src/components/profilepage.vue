@@ -93,7 +93,7 @@
     },
     methods: {
       followUser() {
-        this.$store.dispatch('followUser', {userid: this.userInfo.id, profilePage: true});
+        this.$store.dispatch('followUser', this.userInfo.id);
       },
       unfollowUser() {
         this.$store.dispatch('unfollowUser', this.userInfo.id);

@@ -44,14 +44,14 @@
       }
     },
     mounted () {
-      this.$store.dispatch('getNotFollowingUsers');
+      this.$store.dispatch('getNotFollowingUsers', true);
     },
     methods: {
       seeMoreUser() {
         this.$store.dispatch('getNotFollowingUsers');
       },
       followUser(userid) {
-        this.$store.dispatch('followUser', {userid, profilePage: false});
+        this.$store.dispatch('followUser', userid);
       }
     },
     computed: {

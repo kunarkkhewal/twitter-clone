@@ -135,8 +135,8 @@ export default new Vuex.Store({
       const userList = users && users.data ? users.data : [];
       state.notFollowingUsers.push(...userList)
     },
-    updateOffset (state, value = 3) {
-      state.offset += value;
+    updateOffset (state, value) {
+      state.offset = value ? state.offset + value : state.offset + state.limit + 1 ;
     },
     updateLimit (state, value = 3) {
       state.limit = value;
@@ -210,14 +210,16 @@ export default new Vuex.Store({
       await axios.post(`${state.server_host}/tweet`,tweet);
       dispatch('getFeedTweets');
     },
-    async getNotFollowingUsers ({ state, commit }) {
-      const userid = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
-      const users = await axios.get(`${state.server_host}/user/notfollowingusers/${userid}/${state.offset}/${state.limit}`);
-      commit('updateNotFollowingUsers', users);
-      commit('updateOffset');
-      commit('updateLimit');
+    async getNotFollowingUsers ({ state, commit }, checkForThree) {
+      if (!checkForThree || state.notFollowingUsers.length < 3) {
+        const userid = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
+        const users = await axios.get(`${state.server_host}/user/notfollowingusers/${userid}/${state.offset}/${state.limit}`);
+        commit('updateNotFollowingUsers', users);
+        commit('updateOffset');
+        commit('updateLimit');
+      }
     },
-    async followUser ({ state, commit, dispatch }, {userid, profilePage}) {
+    async followUser ({ state, commit, dispatch }, userid) {
       const body = {
         follower: state.users[state.loggedInUser] && state.users[state.loggedInUser].id,
         following: userid
@@ -225,10 +227,10 @@ export default new Vuex.Store({
       await axios.post(`${state.server_host}/follow`, body);
       commit('removeFollowingUser', userid);
       commit('updateOffset', -1);
-      commit('updateLimit', 1);
+      commit('updateLimit');
       commit('updateIsFollowingProfileUser', true);
-      if (!profilePage || !state.profileUser.id) {
-        dispatch('getNotFollowingUsers');
+      if (!state.profileUser.id) {
+        dispatch('getNotFollowingUsers', true);
         dispatch('getFeedTweets')
       }
     },
