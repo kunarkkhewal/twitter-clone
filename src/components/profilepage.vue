@@ -14,7 +14,7 @@
         <div class="absolute top-20 left-8">
           <img src="../assets/display-picture.png" class="flex-none w-28 h-28 mb-4 rounded-full border-4 border-white"/>
           <p class="text-xl font-bold">{{userInfo.name}}</p>
-          <p class="text-md text-dark font-normal mb-2">@{{$route.params.username}}</p>
+          <p class="text-md text-dark font-normal mb-2">@{{userInfo.username}}</p> 
           <p class="text-dark font-medium">
             <span><i class="fas fa-map-marker-alt"></i> {{userInfo.location}}</span> 
             <span class="ml-4"><i class="fas fa-calendar-alt"></i> Joined {{moment(userInfo.created_at).format("MMM YYYY")}}</span>
@@ -93,10 +93,10 @@
     },
     methods: {
       followUser() {
-        this.$store.commit('followUser', this.$route.params.username);
+        this.$store.dispatch('followUser', {userid: this.userInfo.id, profilePage: true});
       },
       unfollowUser() {
-        this.$store.commit('unfollowUser', this.$route.params.username);
+        this.$store.dispatch('unfollowUser', this.userInfo.id);
       },
       sortedTweets (tweets) {
         tweets = tweets.map(tweet => {
@@ -118,17 +118,8 @@
           : [];
         return tweets;
       },
-      following() {
-        return this.$store.getters.getFollowing(this.$route.params.username);
-      },
-      followers() {
-        return this.$store.getters.getFollowers(this.$route.params.username);
-      },
       isFollowing() {
-        if(this.followers.includes(this.$store.state.loggedInUser)) {
-          return true;
-        }
-        return false;
+        return this.$store.state.isFollowingProfileUser;
       }
     }
   }

@@ -62,6 +62,7 @@
     },
     mounted() {
       this.$store.dispatch('getFeedTweets');
+      this.$store.commit('removeProfileUser');
     },
     methods: {
       isTweeting () {

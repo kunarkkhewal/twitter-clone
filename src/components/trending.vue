@@ -20,15 +20,15 @@
 
     <div v-if="getNotFollowedUsers.length" class="w-full rounded-lg bg-lightest my-4">
       <p class="p-3 text-xl font-bold">Who to Follow</p>
-      <button v-for="user in getNotFollowedUsers" :key=user.username class="w-full flex hover:bg-lighter p-3">
+      <button v-for="user in getNotFollowedUsers" :key=user.id class="w-full flex hover:bg-lighter p-3">
         <img src="../assets/display-picture.png" class="w-12 h-12 rounded-full border border-lighter" />
         <div class="hidden lg:block ml-4">
           <p class="text-md font-semibold leading-tight"> {{user.name}} </p>
           <p class="text-md text-dark leading-tight"> {{user.username}} </p>
         </div>
-        <button @click="followUser(user.username)" class="rounded-full text-sm text-white font-medium ml-auto px-4 py-1 bg-black hover:bg-dark">Follow</button>
+        <button @click="followUser(user.id)" class="rounded-full text-sm text-white font-medium ml-auto px-4 py-1 bg-black hover:bg-dark">Follow</button>
       </button>
-      <button class="p-3 w-full hover:bg-lighter text-left text-blue rounded-b-lg">
+      <button @click="seeMoreUser()" class="p-3 w-full hover:bg-lighter text-left text-blue rounded-b-lg">
         Show More
       </button>
     </div>
@@ -43,17 +43,20 @@
         trending: this.$store.state.trending
       }
     },
+    mounted () {
+      this.$store.dispatch('getNotFollowingUsers');
+    },
     methods: {
-      followUser(username) {
-        this.$store.commit('followUser', username);
+      seeMoreUser() {
+        this.$store.dispatch('getNotFollowingUsers');
       },
-      unfollowUser(username) {
-        this.$store.commit('unfollowUser', username);
+      followUser(userid) {
+        this.$store.dispatch('followUser', {userid, profilePage: false});
       }
     },
     computed: {
       getNotFollowedUsers() {
-        return this.$store.getters.getNotFollowedUsers
+        return this.$store.state.notFollowingUsers;
       }
     }
   }

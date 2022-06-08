@@ -12,11 +12,6 @@ export default new Vuex.Store({
     server_host: 'http://localhost:5000',
     users: {},
     profileUser: {},
-    // users: {
-    //   kunark: {password: 'password', name: 'Kunark', username: 'kunark', location: 'New Delhi', joined: 'July 2017'},
-    //   user1: {password: 'password', name: 'User 1', username: 'user1', location: 'New Delhi', joined: 'July 2018'},
-    //   user2: {password: 'password', name: 'User 2', username: 'user2', location: 'New Delhi', joined: 'July 2019'}
-    // },
     icons: [
       {icon: 'far fa-image', id:'image'},
       {icon: 'fas fa-poll-h', id: 'poll'},
@@ -25,16 +20,8 @@ export default new Vuex.Store({
       {icon: 'fas fa-map-marker-alt', id: 'marker'}
     ],
     following: {},
-    // following: {
-    //   kunark: ['user1', 'user2'],
-    //   user2: ['kunark']
-    // },
+    notFollowingUsers: [],
     followers: {},
-    // followers: {
-    //   kunark: ['user2'],
-    //   user1: ['kunark'],
-    //   user2: ['kunark']
-    // },
     tabs: [
       {icon: 'fas fa-home', title: 'Home', id:'home'},
       {icon: 'fas fa-hashtag', title: 'Explore', id: 'explore'},
@@ -46,18 +33,16 @@ export default new Vuex.Store({
       {icon: 'fas fa-ellipsis-h', title: 'More', id: 'more'}
     ],
     tweets: [],
-    // tweets: {
-    //   kunark: [{content: 'It is good!!!', timestamp: 1652616992000 }],
-    //   user1: [{content: 'User1 Tweet1', timestamp: 1652420152000 }],
-    //   user2: [{content: 'User2 Tweet1', timestamp: 1652530552000 }]
-    // },
     trending: [
       {top: 'Trending in India', title: 'Shivling', bottom: 'Trending: Gyanvapi'},
       {top: 'Music', title: 'Srivalli', bottom: '135K Tweets'},
       {top: 'Pop', title: 'Nucleya', bottom: '40k tweets'},
       {top: 'Trending in World', title: 'Rus vs Ukr War', bottom: '40k tweets'},
       {top: 'Trending', title: 'I am lit', bottom: '25.4k tweets'},
-    ]
+    ],
+    offset: 0,
+    limit: 3,
+    isFollowingProfileUser: false
   },
   getters: {
     ifUserExists: (state) => (username) => {
@@ -91,18 +76,6 @@ export default new Vuex.Store({
       }
       return [];
     },
-    //Feed is for current logged in user
-    // getFeed(state, getters) {
-    //   const users = [state.loggedInUser];
-    //   if (state.following[state.loggedInUser]) {
-    //     users.push(...state.following[state.loggedInUser])
-    //   }
-    //   let tweets = [];
-    //   users.forEach(user => {
-    //     tweets = [...tweets, ...getters.getUserTweets(user)]
-    //   })
-    //   return tweets; 
-    // },
     getFollowing: (state) => (username) => {
       if (state.following[username]) {
         return state.following[username]
@@ -152,47 +125,38 @@ export default new Vuex.Store({
         state.profileUser = user.data;
       }
     },
-    // addTweet (state, newTweet) {
-    //   state.tweets = {
-    //     ...state.tweets
-    //   }
-    //   state.tweets[state.loggedInUser] = state.tweets[state.loggedInUser] || [];
-    //   state.tweets[state.loggedInUser].push(newTweet);
-    // },
+    removeProfileUser: (state) => {
+      state.profileUser = {};
+    },
     updateTweets (state, tweets) {
       state.tweets = [...tweets.data];
     },
-    followUser (state, username) {
-      state.following = {
-        ...state.following
+    updateNotFollowingUsers (state, users) {
+      const userList = users && users.data ? users.data : [];
+      state.notFollowingUsers.push(...userList)
+    },
+    updateOffset (state, value = 3) {
+      state.offset += value;
+    },
+    updateLimit (state, value = 3) {
+      state.limit = value;
+    },
+    removeFollowingUser (state, userid) {
+      if (state.notFollowingUsers.length) {
+        state.notFollowingUsers = state.notFollowingUsers.filter(user => user.id != userid);
       }
-      state.followers = {
-        ...state.followers
+    },
+    addUnfollowingUser (state) {
+      if (state.notFollowingUsers.length) {
+        state.notFollowingUsers.push({
+          id: state.profileUser.id,
+          name: state.profileUser.name,
+          username: state.profileUser.username
+        });
       }
-      state.following[state.loggedInUser] = state.following[state.loggedInUser] || [];
-      if(!state.following[state.loggedInUser] || !state.following[state.loggedInUser].includes(username)) {
-        state.following[state.loggedInUser] = [...state.following[state.loggedInUser], username];
-      }
-      state.followers[username] = state.followers[username] || [];
-      if(!state.followers[username] || !state.followers[username].includes(state.loggedInUser)) {
-        state.followers[username] = [...state.followers[username], state.loggedInUser];
-      }
-    }, 
-    unfollowUser (state, username) {
-      state.following = {
-        ...state.following
-      }
-      state.followers = {
-        ...state.followers
-      }
-      if(state.following[state.loggedInUser] && state.following[state.loggedInUser].includes(username)) {
-        let index = state.following[state.loggedInUser].indexOf(username);
-        state.following[state.loggedInUser].splice(index, 1);
-      }
-      if(state.followers[username] && state.followers[username].includes(state.loggedInUser)) {
-        let index = state.followers[username].indexOf(state.loggedInUser);
-        state.followers[username].splice(index, 1);
-      }
+    },
+    updateIsFollowingProfileUser (state, isFollowing) {
+      state.isFollowingProfileUser = isFollowing;
     }
   },
   actions: {
@@ -221,7 +185,13 @@ export default new Vuex.Store({
       router.push('/login');
     },
     async getProfileUser ({ state, commit }, username) {
+      const follower = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
       const user = await axios.get(`${state.server_host}/user/username/${username}`);
+      const following = user.data.id;
+      if (follower != following) {
+        const isFollowingProfileUser = await axios.get(`${state.server_host}/follow/isfollowing/${follower}/${following}`);
+        commit('updateIsFollowingProfileUser', isFollowingProfileUser.data);
+      }
       commit('addProfileUser', user);
     },
     async getUserTweets ({ state, commit }) {
@@ -239,6 +209,37 @@ export default new Vuex.Store({
       tweet.userid = userid;
       await axios.post(`${state.server_host}/tweet`,tweet);
       dispatch('getFeedTweets');
+    },
+    async getNotFollowingUsers ({ state, commit }) {
+      const userid = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
+      const users = await axios.get(`${state.server_host}/user/notfollowingusers/${userid}/${state.offset}/${state.limit}`);
+      commit('updateNotFollowingUsers', users);
+      commit('updateOffset');
+      commit('updateLimit');
+    },
+    async followUser ({ state, commit, dispatch }, {userid, profilePage}) {
+      const body = {
+        follower: state.users[state.loggedInUser] && state.users[state.loggedInUser].id,
+        following: userid
+      }
+      await axios.post(`${state.server_host}/follow`, body);
+      commit('removeFollowingUser', userid);
+      commit('updateOffset', -1);
+      commit('updateLimit', 1);
+      commit('updateIsFollowingProfileUser', true);
+      if (!profilePage || !state.profileUser.id) {
+        dispatch('getNotFollowingUsers');
+        dispatch('getFeedTweets')
+      }
+    },
+    async unfollowUser ({ state, commit }, userid) {
+      const body = {
+        follower: state.users[state.loggedInUser] && state.users[state.loggedInUser].id,
+        following: userid
+      }
+      await axios.post(`${state.server_host}/follow/unfollow`, body);
+      commit('updateIsFollowingProfileUser', false);
+      commit('addUnfollowingUser');
     }
   }
 })
