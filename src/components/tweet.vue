@@ -18,8 +18,6 @@
 </template>
 
 <script>
-  import moment from "moment";
-
   export default {
     name: 'TweetSection',
     emits: ['tweetmade'],
@@ -44,10 +42,9 @@
       addNewTweet () {
         let newTweet = {
           content: this.tweet.content,
-          timestamp: moment().valueOf()
         };
         this.tweet.content = '';
-        this.$store.commit('addTweet', newTweet)
+        this.$store.dispatch('addTweet', newTweet)
         this.tweetDisabled = true;
         this.$emit('tweetmade');
       },

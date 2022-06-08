@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col-reverse"> 
+    <div class="flex flex-col"> 
       <div v-for="tweet in tweets" :key=tweet.id class="w-full p-4 border-b hover:bg-lightest flex">
         <div class="mr-4">
           <img src="../assets/display-picture.png" class="h-12 w-12 rounded-full"/>

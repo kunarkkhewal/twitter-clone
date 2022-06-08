@@ -152,13 +152,13 @@ export default new Vuex.Store({
         state.profileUser = user.data;
       }
     },
-    addTweet (state, newTweet) {
-      state.tweets = {
-        ...state.tweets
-      }
-      state.tweets[state.loggedInUser] = state.tweets[state.loggedInUser] || [];
-      state.tweets[state.loggedInUser].push(newTweet);
-    },
+    // addTweet (state, newTweet) {
+    //   state.tweets = {
+    //     ...state.tweets
+    //   }
+    //   state.tweets[state.loggedInUser] = state.tweets[state.loggedInUser] || [];
+    //   state.tweets[state.loggedInUser].push(newTweet);
+    // },
     updateTweets (state, tweets) {
       state.tweets = [...tweets.data];
     },
@@ -234,5 +234,11 @@ export default new Vuex.Store({
       const tweets = await axios.get(`${state.server_host}/tweet/feed/${userid}`);
       commit('updateTweets', tweets);
     },
+    async addTweet ({ state, dispatch }, tweet) {
+      const userid = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
+      tweet.userid = userid;
+      await axios.post(`${state.server_host}/tweet`,tweet);
+      dispatch('getFeedTweets');
+    }
   }
 })
