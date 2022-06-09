@@ -89,7 +89,7 @@
         <div class="w-full">
           <div class="flex items-center w-full">
             <p class="font-semibold">{{ userInfo.name }}</p>
-            <p class="text-sm text-dark ml-2">@{{ $route.params.username }}</p>
+            <p class="text-sm text-dark ml-2">@{{ userInfo.username }}</p>
             <p class="text-sm text-dark ml-2">
               <span class="mr-1 font-extrabold">.</span>
               {{ moment(tweet.timestamp).fromNow() }}

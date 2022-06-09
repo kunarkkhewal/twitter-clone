@@ -65,7 +65,13 @@ export default new Vuex.Store({
       state.isLoggedIn = false;
       state.loggedInUser = "";
       state.users = {};
-      state.tweets = {};
+      state.profileUser = {};
+      state.notFollowingUsers = [];
+      state.offset = 0;
+      state.limit = 3;
+      state.isFollowingProfileUser = false;
+      state.lastAction = "";
+      state.tweets = [];
     },
     updateLoggedInUser: (state, { username, userData }) => {
       if (username) {
