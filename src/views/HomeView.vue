@@ -18,6 +18,6 @@ export default {
     HomePage,
     Sidenav,
     TrendingPage
-}
+  }
 }
 </script>

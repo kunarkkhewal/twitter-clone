@@ -65,13 +65,6 @@
       this.$store.commit('removeProfileUser');
     },
     methods: {
-      isTweeting () {
-        if (this.tweet.content) {
-          this.tweetDisabled = false;
-        } else {
-          this.tweetDisabled = true;
-        }
-      },
       sortedTweets (tweets) {
         tweets = tweets.map(tweet => {
           return {...tweet, timestamp: moment(tweet.created_at)}

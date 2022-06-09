@@ -19,9 +19,7 @@ export default new Vuex.Store({
       {icon: 'fas fa-calendar-alt', id: 'calendar'},
       {icon: 'fas fa-map-marker-alt', id: 'marker'}
     ],
-    following: {},
     notFollowingUsers: [],
-    followers: {},
     tabs: [
       {icon: 'fas fa-home', title: 'Home', id:'home'},
       {icon: 'fas fa-hashtag', title: 'Explore', id: 'explore'},
@@ -46,18 +44,6 @@ export default new Vuex.Store({
     lastAction: ''
   },
   getters: {
-    ifUserExists: (state) => (username) => {
-      if (state.users[username]) {
-        return true
-      }
-      return false;
-    },
-    getUserPassword: (state) => (username) => {
-      if (state.users[username]) {
-        return state.users[username].password
-      }
-      return '';
-    },
     getUserInfo: (state) => (username) => {
       if (state.users[username]) {
         const userInfo = {...state.users[username]};
@@ -66,41 +52,6 @@ export default new Vuex.Store({
       }
       return {};
     },
-    getUserTweets: (state) => (username) => {
-      if (state.tweets[username]) {
-        let tweets = state.tweets[username]
-        tweets.forEach(tweet => {
-          tweet.username = username;
-          tweet.name = state.users[username] && state.users[username].name
-        })
-        return tweets;
-      }
-      return [];
-    },
-    getFollowing: (state) => (username) => {
-      if (state.following[username]) {
-        return state.following[username]
-      }
-      return [];
-    },
-    getFollowers: (state) => (username) => {
-      if (state.followers[username]) {
-        return state.followers[username]
-      }
-      return [];
-    },
-    getNotFollowedUsers: (state, getters) => {
-      let users = Object.keys(state.users);
-      let followingUsers = getters.getFollowing(state.loggedInUser);
-      users = users.filter(user => !followingUsers.includes(user));
-      users.splice(users.indexOf(state.loggedInUser), 1);
-      return users.map(user => {
-        return { 
-          name: state.users[user].name, 
-          username: state.users[user].username
-        }
-      });
-    }
   },
   mutations: {
     login (state, {username, userData}) {
