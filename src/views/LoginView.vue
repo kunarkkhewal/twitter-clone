@@ -1,24 +1,25 @@
 <template>
-  <component :is=componentToShow 
-    @changeComponent = this.changeComponent
-    @updateUserName = this.updateUserName
+  <component
+    :is="componentToShow"
+    @changeComponent="this.changeComponent"
+    @updateUserName="this.updateUserName"
     :username="username"
   ></component>
 </template>
 
 <script>
-  import LoginMainPage from '../components/login/LoginMain.vue';
-  import LoginFormPage from '../components/login/LoginForm.vue';
+  import LoginMainPage from "../components/login/LoginMain.vue";
+  import LoginFormPage from "../components/login/LoginForm.vue";
   export default {
-    name: 'LoginPage',
+    name: "LoginPage",
     components: {
       LoginMainPage,
-      LoginFormPage
+      LoginFormPage,
     },
     data() {
       return {
-        componentToShow: 'LoginMainPage',
-        username: ''
+        componentToShow: "LoginMainPage",
+        username: "",
       };
     },
     methods: {
@@ -27,7 +28,7 @@
       },
       updateUserName(value) {
         this.username = value;
-      }
-    }
-  }
+      },
+    },
+  };
 </script>

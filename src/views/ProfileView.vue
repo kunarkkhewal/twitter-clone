@@ -7,17 +7,17 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import ProfilePage from '@/components/profilepage.vue';
-import Sidenav from '../components/sidenav.vue';
-import TrendingPage from '../components/trending.vue'
+  // @ is an alias to /src
+  import ProfilePage from "@/components/profilepage.vue";
+  import Sidenav from "../components/sidenav.vue";
+  import TrendingPage from "../components/trending.vue";
 
-export default {
-  name: 'HomeView',
-  components: {
-    ProfilePage,
-    Sidenav,
-    TrendingPage
-  }
-}
+  export default {
+    name: "HomeView",
+    components: {
+      ProfilePage,
+      Sidenav,
+      TrendingPage,
+    },
+  };
 </script>
