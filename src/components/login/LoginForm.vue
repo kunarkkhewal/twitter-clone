@@ -33,6 +33,7 @@
 <script>
   import swal from 'sweetalert';
   import axios from 'axios';
+  import ACTION_ROUTES from '../../store/actionRoutes';
 
   export default {
     name: 'LoginFormPage',
@@ -58,7 +59,7 @@
         }
       },
       async loginUser () {
-        const user = await axios.get(`${this.$store.state.server_host}/user/username/${this.username}`);
+        const user = await axios.get(`${ACTION_ROUTES.USER_DEFAULT_ROUTE}/username/${this.username}`);
         if (user.data && user.data.username) {
           const userPassword = user.data.password;
           if (userPassword !== '' && userPassword === this.password) {

@@ -3,22 +3,23 @@ import VueRouter from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import ProfileView from '../views/ProfileView.vue';
 import store from '../store/index';
+import ROUTES from './routes';
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: ROUTES.HOME_ROUTE,
     name: 'home',
     component: HomeView
   },
   {
-    path: '/profile/:username',
+    path: ROUTES.PROFILE_ROUTE,
     name: 'profile',
     component: ProfileView
   },
   {
-    path: '/login',
+    path: ROUTES.LOGIN_ROUTE,
     name: 'login',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -26,13 +27,13 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
   },
   {
-    path: '/signup',
+    path: ROUTES.SIGNUP_ROUTE,
     name: 'signup',
     component: () => import('../views/SignupView.vue')
   },
   {
     path: '*',
-    redirect: '/'
+    redirect: ROUTES.HOME_ROUTE
   }
 ]
 
@@ -44,14 +45,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   store.dispatch('fetchLoggedInUser');
-  if (to.fullPath === '/' || to.fullPath.includes('profile')) {
+  if (to.fullPath === ROUTES.HOME_ROUTE || to.fullPath.includes('profile')) {
     if (!store.state.isLoggedIn) {
-      next('/login');
+      next(ROUTES.LOGIN_ROUTE);
     }
   }
   if (to.fullPath === '/login') {
     if (store.state.isLoggedIn) {
-      next('/');
+      next(ROUTES.HOME_ROUTE);
     }
   }
   next();

@@ -36,6 +36,7 @@
 
 <script>
   import axios from 'axios';
+  import ACTION_ROUTES from '../../store/actionRoutes';
 
   export default {
     name: 'SignupFormPage',
@@ -64,7 +65,7 @@
         }
       },
       async checkUserExists () {
-        const user = await axios.get(`${this.$store.state.server_host}/user/ifusernameexists/${this.userInfo.username}`);
+        const user = await axios.get(`${ACTION_ROUTES.USER_DEFAULT_ROUTE}/ifusernameexists/${this.userInfo.username}`);
         if (user.data === true) {
           this.ifUserExists = true;
           this.userInfo.password = '';
