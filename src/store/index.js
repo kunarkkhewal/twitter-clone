@@ -42,7 +42,8 @@ export default new Vuex.Store({
     ],
     offset: 0,
     limit: 3,
-    isFollowingProfileUser: false
+    isFollowingProfileUser: false,
+    lastAction: ''
   },
   getters: {
     ifUserExists: (state) => (username) => {
@@ -136,7 +137,7 @@ export default new Vuex.Store({
       state.notFollowingUsers.push(...userList)
     },
     updateOffset (state, value) {
-      state.offset = value ? state.offset + value : state.offset + state.limit + 1 ;
+      state.offset = value ? state.offset + value : state.offset + state.limit ;
     },
     updateLimit (state, value = 3) {
       state.limit = value;
@@ -157,6 +158,9 @@ export default new Vuex.Store({
     },
     updateIsFollowingProfileUser (state, isFollowing) {
       state.isFollowingProfileUser = isFollowing;
+    },
+    updateLastAction (state, action) {
+      state.lastAction = action
     }
   },
   actions: {
@@ -212,6 +216,9 @@ export default new Vuex.Store({
     },
     async getNotFollowingUsers ({ state, commit }, checkForThree) {
       if (!checkForThree || state.notFollowingUsers.length < 3) {
+        if (state.lastAction == 'unfollow') {
+          commit('updateOffset', -1)
+        }
         const userid = state.users[state.loggedInUser] && state.users[state.loggedInUser].id
         const users = await axios.get(`${state.server_host}/user/notfollowingusers/${userid}/${state.offset}/${state.limit}`);
         commit('updateNotFollowingUsers', users);
@@ -226,9 +233,9 @@ export default new Vuex.Store({
       }
       await axios.post(`${state.server_host}/follow`, body);
       commit('removeFollowingUser', userid);
+      commit('updateIsFollowingProfileUser', userid == state.profileUser.id);
       commit('updateOffset', -1);
-      commit('updateLimit');
-      commit('updateIsFollowingProfileUser', true);
+      commit('updateLastAction', 'follow')
       if (!state.profileUser.id) {
         dispatch('getNotFollowingUsers', true);
         dispatch('getFeedTweets')
@@ -242,6 +249,8 @@ export default new Vuex.Store({
       await axios.post(`${state.server_host}/follow/unfollow`, body);
       commit('updateIsFollowingProfileUser', false);
       commit('addUnfollowingUser');
+      commit('updateLastAction', 'unfollow')
+      commit('updateOffset', 1);
     }
   }
 })

@@ -52,11 +52,19 @@
       },
       followUser(userid) {
         this.$store.dispatch('followUser', userid);
+      },
+      uniqueUsers(users) {
+        let usersObj = {};
+        users.forEach(user => {
+          usersObj[user.id] = user;
+        });
+        let usersArr = Object.values(usersObj);
+        return usersArr;
       }
     },
     computed: {
       getNotFollowedUsers() {
-        return this.$store.state.notFollowingUsers;
+        return this.uniqueUsers(this.$store.state.notFollowingUsers);
       }
     }
   }
